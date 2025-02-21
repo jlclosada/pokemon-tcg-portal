@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center items-center h-32">
+  <div class="flex justify-center items-center h-32 w-full">
     <img
       src="/images/pokeball.png"
       alt="Loading..."
