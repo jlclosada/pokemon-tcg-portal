@@ -1,7 +1,7 @@
 <!-- components/CollectionsGrid.vue -->
 <template>
   <div>
-    <h1 class="text-2xl font-bold mb-6 text-center mt-12">Colecciones de Pokémon TCG</h1>
+    <!-- <h1 class="text-2xl font-bold mb-6 text-center mt-12">Colecciones de Pokémon TCG</h1> -->
     <!--Loading spinner-->
     <LoadingSpinner v-if="loading" />
     <div v-else-if="error" class="text-red-500">Error: {{ error }}</div>

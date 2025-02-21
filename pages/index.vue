@@ -1,8 +1,8 @@
 <!-- pages/index.vue -->
 <template>
-  <CollectionsGrid />
+  <HomeScreen />
 </template>
 
 <script setup lang="ts">
-import CollectionsGrid from "@/components/CollectionsGrid.vue";
+import HomeScreen from "@/components/HomeScreen.vue";
 </script>

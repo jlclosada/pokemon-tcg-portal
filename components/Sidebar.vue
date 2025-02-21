@@ -10,8 +10,8 @@
     </button>
 
     <!-- Lista de colecciones -->
-    <LoadingSpinner v-if="loading" />
-    <ul v-else-if="error" class="text-red-500 mt-2">{{ error }}</ul>
+    <!-- <LoadingSpinner v-if="loading" /> -->
+    <!-- <ul v-else-if="error" class="text-red-500 mt-2">{{ error }}</ul> -->
 
     <Transition name="fade">
       <ul v-show="isOpen" class="space-y-2 mt-2">
