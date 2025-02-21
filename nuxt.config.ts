@@ -1,5 +1,6 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
+  pages: true,
   devtools: { enabled: true },
   modules: ['@nuxt/ui', '@nuxtjs/tailwindcss'],
   runtimeConfig: {

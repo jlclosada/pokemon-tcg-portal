@@ -16,45 +16,20 @@
       </div>
     </div>
 
-    <!-- Botones de Acción -->
+    <!-- Botones -->
     <div class="mt-6 flex justify-center gap-4">
-      <UButton
-        label="Añadir a Favoritos"
-        icon="i-heroicons-heart"
-        color="red"
-        @click="addToFavorites"
-      />
-      <UButton
-        label="Ver en Cardmarket"
-        icon="i-heroicons-external-link"
-        color="blue"
-        @click="openCardmarket"
-      />
+      <FavoriteButton :cardName="card.name" />
+      <CardmarketButton :cardUrl="card.tcgplayer?.url || card.cardmarket?.url" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
+import CardmarketButton from "./buttons/CardmarketButton.vue";
+import FavoriteButton from "./buttons/FavoriteButton.vue";
 
 const props = defineProps<{ card: any }>();
 
-// Formatear información como debilidad y resistencia
-const formatArray = (array) => array?.map(item => item.type + ' (' + item.value + ')').join(', ') || 'N/A';
-
-// Función para "añadir a favoritos"
-const addToFavorites = () => {
-  console.log(`Añadido a favoritos: ${props.card.name}`);
-  alert(`${props.card.name} añadido a favoritos ❤️`);
-};
-
-// Función para abrir Cardmarket
-const openCardmarket = () => {
-  const url = props.card.tcgplayer?.url || props.card.cardmarket?.url;
-  if (url) {
-    window.open(url, '_blank');
-  } else {
-    alert('No hay enlace disponible para esta carta.');
-  }
-};
+const formatArray = (array) =>
+  array?.map((item) => item.type + " (" + item.value + ")").join(", ") || "N/A";
 </script>

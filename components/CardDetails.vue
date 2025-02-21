@@ -1,5 +1,8 @@
 <template>
-  <USlideover v-model="isOpen">
+  <USlideover
+    :modelValue="isOpen"
+    @update:modelValue="emit('update:isOpen', $event)"
+  >
     <div class="p-4 flex-1 bg-white dark:bg-gray-900 relative">
       <UButton
         color="gray"
@@ -24,18 +27,14 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits, defineProps, ref, watch } from 'vue';
+import { defineEmits, defineProps } from 'vue';
 import PokemonInfo from './PokemonInfo.vue';
 
-const props = defineProps<{ card: any | null; isOpen: boolean; }>();
+defineProps<{ card: any | null; isOpen: boolean; }>();
 const emit = defineEmits(['update:isOpen']);
-const isOpen = ref(props.isOpen);
 
+// Cierra el slide-over y notifica al padre
 const close = () => {
   emit('update:isOpen', false);
 };
-
-watch(() => props.isOpen, (newVal) => {
-  isOpen.value = newVal;
-});
 </script>
