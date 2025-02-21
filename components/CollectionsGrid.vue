@@ -1,8 +1,9 @@
 <!-- components/CollectionsGrid.vue -->
 <template>
   <div>
-    <h1 class="text-2xl font-bold mb-4">Colecciones de Pokémon TCG</h1>
-    <div v-if="loading" class="text-center">Cargando colecciones...</div>
+    <h1 class="text-2xl font-bold mb-6 text-center mt-12">Colecciones de Pokémon TCG</h1>
+    <!--Loading spinner-->
+    <LoadingSpinner v-if="loading" />
     <div v-else-if="error" class="text-red-500">Error: {{ error }}</div>
 
     <ul v-else class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">

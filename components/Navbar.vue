@@ -1,9 +1,13 @@
 <template>
   <nav class="fixed top-0 left-0 w-full bg-white dark:bg-gray-900 shadow-md z-50">
     <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
-      <!-- Logo con imagen -->
+      <!-- Logo con animaciones -->
       <ULink to="/">
-        <img src="/images/pokeball.png" alt="Pokéball Logo" class="w-10 h-10 object-contain" />
+        <img
+          src="/images/pokeball.png"
+          alt="Pokéball Logo"
+          class="w-14 h-14 object-contain cursor-pointer transition-all duration-300 transform hover:rotate-180 hover:scale-125"
+        />
       </ULink>
 
       <UButton @click="toggleMenu()" class="block md:hidden">
@@ -25,8 +29,6 @@
   </nav>
 </template>
 
-
-
 <script setup lang="ts">
 const isMenuOpen = ref(false);
 const toggleMenu = () => (isMenuOpen.value = !isMenuOpen.value);
@@ -41,8 +43,6 @@ const isDark = computed({
 });
 const horizontalLinks = [
   { label: "Home", icon: 'i-heroicons-home', to: "/" },
-  // { label: "About", to: "/about" },
-  // { label: "Contact", to: "/contact" },
 ];
 const verticalLinks = [...horizontalLinks];
 </script>

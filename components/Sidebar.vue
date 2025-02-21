@@ -3,14 +3,14 @@
     <!-- Botón de desplegable -->
     <button
       @click="isOpen = !isOpen"
-      class="w-full flex items-center justify-between p-2 text-lg font-bold bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+      class="w-full flex items-center justify-between p-2 text-lg font-bold light:bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition"
     >
-      <span>Colecciones</span>
+      <span class="ml-2">Colecciones</span>
       <Icon :name="isOpen ? 'heroicons:chevron-up' : 'heroicons:chevron-down'" class="w-5 h-5" />
     </button>
 
     <!-- Lista de colecciones -->
-    <ul v-if="loading" class="text-center mt-2">Cargando...</ul>
+    <LoadingSpinner v-if="loading" />
     <ul v-else-if="error" class="text-red-500 mt-2">{{ error }}</ul>
 
     <Transition name="fade">

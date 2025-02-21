@@ -1,8 +1,9 @@
 <!-- pages/collection/[id].vue -->
 <template>
   <div>
-    <h1 class="text-2xl font-bold mb-4">{{ collection?.name || "Colección" }}</h1>
-    <div v-if="loading" class="text-center">Cargando cartas...</div>
+    <h1 class="text-2xl font-bold mb-4 text-center mt-12">{{ collection?.name || "Colección" }}</h1>
+    <!--Loading spinner-->
+    <LoadingSpinner v-if="loading" />
     <div v-else-if="error" class="text-red-500">Error: {{ error }}</div>
 
     <ul v-else class="grid grid-cols-2 md:grid-cols-5 gap-2">
@@ -15,9 +16,9 @@
         <img
           :src="card.images.small"
           :alt="card.name"
-          class="w-full rounded-md brightness-110"
+          class="w-full rounded-md brightness-110 mt-4"
         />
-        <p class="mt-1 text-center text-sm font-medium">
+        <p class="mt-3 text-center text-sm font-medium">
           {{ `#${card.number} ${card.name}` }}
         </p>
       </li>
