@@ -1,4 +1,3 @@
-<!-- components/GlassButton.vue -->
 <template>
   <button class="glass-button" @click="onClick">
     <span v-if="icon">{{ icon }}</span> {{ label }}
@@ -29,10 +28,12 @@ defineProps<{
 }
 
 .glass-button:hover {
-  transform: scale(1.05);
+  transform: scale(1.1);
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.3);
 }
 
+/* Mejorar la animación de la pseudo-clase */
 .glass-button::before {
   content: "";
   position: absolute;

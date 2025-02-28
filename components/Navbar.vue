@@ -43,6 +43,8 @@ const isDark = computed({
 });
 const horizontalLinks = [
   { label: "Home", icon: 'i-heroicons-home', to: "/" },
+  { label: "Profile", icon: 'i-heroicons-user', to: "/profile" },
+  { label: "About us", icon: 'i-heroicons-information-circle', to: "/about" },
 ];
 const verticalLinks = [...horizontalLinks];
 </script>

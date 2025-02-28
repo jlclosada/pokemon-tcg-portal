@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col min-h-screen">
     <!-- Sección de bienvenida -->
-    <GeneralCardSearch />
+    <!--<GeneralCardSearch /> -->
     <HomeScreen />
 
     <!-- Sección de características -->

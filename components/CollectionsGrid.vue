@@ -10,7 +10,7 @@
       <li
         v-for="collection in collections"
         :key="collection.id"
-        class="p-2 bg-white dark:bg-transparent rounded w-48 hover:scale-110 transition-all cursor-pointer"
+        class="p-6 bg-white dark:bg-transparent rounded w-48 hover:scale-110 transition-all cursor-pointer"
         @click="goToCollection(collection.id)"
       >
         <img
@@ -18,7 +18,7 @@
           :alt="collection.name"
           class="w-full h-24 object-contain rounded-md"
         />
-        <p class="mt-2 text-center text-sm font-medium">{{ collection.name }}</p>
+        <p class="mt-4 text-center text-sm font-medium">{{ collection.name }}</p>
       </li>
     </ul>
   </div>
