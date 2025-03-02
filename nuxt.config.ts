@@ -13,11 +13,16 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   pages: true,
   devtools: { enabled: true },
-  modules: ['@nuxt/ui', '@nuxtjs/tailwindcss'],
+  modules: [
+    '@nuxt/ui',
+    '@nuxtjs/tailwindcss',
+    '@pinia/nuxt',
+  ],
   runtimeConfig: {
     pokemonTcgApiKey: process.env.NUXT_POKEMON_TCG_API_KEY,
     public: {
-      pokemonTcgApiBase: 'https://api.pokemontcg.io/v2' // Asegúrate de que esté bien definida
+      pokemonTcgApiBase: 'https://api.pokemontcg.io/v2',
+      backendBaseUrl: 'http://localhost:8000/api'  // URL base de tu backend Django
     }
-  }
-})
+  },
+});
