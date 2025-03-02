@@ -1,22 +1,8 @@
 <template>
-  <div class="mt-4 p-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg transition-transform transform hover:scale-105 duration-500 ease-in-out">
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-      <div class="text-sm text-gray-800 dark:text-gray-300 space-y-3">
-        <p><strong>Rareza:</strong> {{ card.rarity || 'Desconocida' }}</p>
-        <p><strong>Set:</strong> {{ card.set.name }}</p>
-        <p><strong>Tipo:</strong> {{ card.types ? card.types.join(', ') : 'No disponible' }}</p>
-      </div>
-
-      <div class="text-sm text-gray-800 dark:text-gray-300 space-y-3">
-        <p><strong>HP:</strong> {{ card.hp || 'N/A' }}</p>
-        <p><strong>Debilidad:</strong> {{ formatArray(card.weaknesses) }}</p>
-        <p><strong>Resistencia:</strong> {{ formatArray(card.resistances) }}</p>
-      </div>
-    </div>
+  <div class="mt-1 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 duration-500 ease-in-out">
 
     <!-- Botones -->
-    <div class="mt-8 flex justify-center gap-8">
+    <div class="mt-2 flex justify-center gap-2 flex-col">
       <FavoriteButton :cardName="card.name" />
       <CardmarketButton :cardUrl="card.cardmarket?.url || card.tcgplayer?.url" />
       <ViewCardDetail />

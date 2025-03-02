@@ -1,9 +1,10 @@
 <template>
   <div>
     <!-- Logo de la coleccion al lado del titulo-->
-    <div class="flex items-center gap-2">
-      <img :src="collection?.images.logo" :alt="collection?.name" class="w-32 mr-8 object-contain mt-6 mb-6" />
-      <h1 class="text-3xl font-bold mb-4 text-center mt-12">{{ collection?.name || "Colección" }}</h1>
+    <div class="flex items-center gap-2 justify-center flex-col">
+      <img :src="collection?.images.logo" :alt="collection?.name" class="w-52 mr-8 object-contain ml-8 mt-12 flex items-center justify-center" />
+
+      <!-- <h1 class="text-xl font-bold mb-4 text-center mt-4">{{ collection?.name || "Colección" }}</h1> -->
     </div>
 
     <!-- Loading -->

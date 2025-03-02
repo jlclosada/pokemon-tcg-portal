@@ -16,7 +16,7 @@
         @click="close"
       />
       
-      <div v-if="card" class="mt-10">
+      <div v-if="card" class="mt-6">
         <!-- Nombre de la carta con número de colección -->
         <h2 class="text-3xl font-extrabold text-center mb-4 text-gradient bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-600">
           {{ card.name }} 

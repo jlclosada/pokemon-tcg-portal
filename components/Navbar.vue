@@ -1,44 +1,98 @@
 <template>
-  <nav class="fixed top-0 left-0 w-full bg-white dark:bg-gray-900 shadow-md z-50">
-    <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
-      <!-- Logo con animaciones -->
-      <ULink to="/">
+  <nav class="fixed top-0 left-0 w-full backdrop-blur-lg bg-white/80 dark:bg-gray-900/80 border-b border-gray-200/30 dark:border-gray-700/30 z-50 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <!-- Logo con efecto mejorado -->
+      <ULink to="/" class="flex-shrink-0">
         <img
           src="/images/pokeball.png"
           alt="Pokéball Logo"
-          class="w-14 h-14 object-contain cursor-pointer transition-all duration-300 transform hover:rotate-180 hover:scale-125"
+          class="w-12 h-12 object-contain cursor-pointer transition-transform duration-300 hover:scale-110"
         />
       </ULink>
 
-      <UButton @click="toggleMenu()" class="block md:hidden">
-        <Icon :name="isMenuOpen ? 'pajamas:close' : 'pajamas:hamburger'" class="w-4 h-4 mt-1"/>
+      <!-- Menú hamburguesa mobile -->
+      <UButton 
+        @click="toggleMenu()" 
+        class="md:hidden p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors absolute right-4"
+      >
+        <Icon 
+          :name="isMenuOpen ? 'pajamas:close' : 'pajamas:hamburger'" 
+          class="w-6 h-6 text-gray-900 dark:text-gray-100" 
+        />
       </UButton>
 
-      <div class="hidden md:flex">
-        <UHorizontalNavigation :links="horizontalLinks" class="border-b border-gray-200 dark:border-gray-800"/>
+      <!-- Navegación desktop -->
+      <div class="hidden md:flex items-center gap-6 mx-6 flex-1 justify-center">
+        <ULink
+          v-for="link in horizontalLinks"
+          :key="link.to"
+          :to="link.to"
+          active-class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500"
+          class="px-4 py-2 font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors relative group"
+        >
+          <span class="relative z-10 flex items-center gap-1.5">
+            <UIcon :name="link.icon" class="w-5 h-5" />
+            {{ link.label }}
+          </span>
+          <span class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+        </ULink>
       </div>
 
-      <div v-if="isMenuOpen" class="flex flex-col md:hidden absolute top-10 z-10 left-1/2 transform -translate-x-1/2 p-4 items-center">
-        <UVerticalNavigation :links="verticalLinks"/>
+      <!-- Menú mobile -->
+      <div 
+        v-if="isMenuOpen" 
+        class="md:hidden absolute top-full left-0 w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg border-b border-gray-200/30 dark:border-gray-700/30"
+      >
+        <UVerticalNavigation 
+          :links="verticalLinks" 
+          class="p-4"
+          :ui="{
+            wrapper: 'space-y-2',
+            base: 'group rounded-lg px-4 py-3 transition-colors',
+            active: 'bg-gradient-to-r from-blue-500/10 to-purple-500/10 text-blue-600 dark:text-blue-400',
+            inactive: 'hover:bg-gray-100 dark:hover:bg-gray-800'
+          }"
+        />
       </div>
 
-      <div class="flex items-center justify-center gap-2">
-        <UToggle v-model="isDark" on-icon="i-heroicons-moon" off-icon="i-heroicons-sun" size="lg"/>
-        <UButton v-if="authStore.isAuthenticated" @click="logout">Logout</UButton>
-        <UButton v-else @click="login">Login</UButton>
+      <!-- Controles derecha -->
+      <div class="flex items-center gap-3 ml-auto">
+        <UToggle 
+          v-model="isDark"
+          class="rounded-full border border-gray-200 dark:border-gray-700"
+          on-icon="i-heroicons-moon-20-solid"
+          off-icon="i-heroicons-sun-20-solid"
+          size="lg"
+        />
+        <UButton
+          v-if="authStore.isAuthenticated"
+          @click="logout"
+          color="gray"
+          variant="ghost"
+          class="hidden md:inline-flex"
+          label="Logout"
+        />
+        <UButton
+          v-else
+          @click="login"
+          color="gray"
+          variant="solid"
+          class="hidden md:inline-flex bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600"
+          label="Login"
+        />
       </div>
     </div>
   </nav>
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from '~/stores/auth.store'; // Importa el store de autenticación
+import { useAuthStore } from '~/stores/auth.store';
 
-const authStore = useAuthStore(); // Usa el store de autenticación
-
+const authStore = useAuthStore();
 const isMenuOpen = ref(false);
 const toggleMenu = () => (isMenuOpen.value = !isMenuOpen.value);
 const colorMode = useColorMode();
+
 const isDark = computed({
   get() {
     return colorMode.value === 'dark';
@@ -61,21 +115,29 @@ const horizontalLinks = computed(() => {
     return [
       { label: "Home", icon: 'i-heroicons-home', to: "/" },
       { label: "About us", icon: 'i-heroicons-information-circle', to: "/about" },
-      { label: "Login", icon: 'i-heroicons-arrow-right-start-on-rectangle', to: "/login" }
     ];
   }
 });
 
-const verticalLinks = computed(() => {
-  return horizontalLinks.value;
-});
+const verticalLinks = computed(() => horizontalLinks.value);
 
-const login = () => {
-  navigateTo('/login'); // Redirige al usuario a la página de login
-};
-
+const login = () => navigateTo('/login');
 const logout = () => {
-  authStore.logout(); // Cierra la sesión usando el store
-  navigateTo('/'); // Redirige al usuario a la página de inicio
+  authStore.logout();
+  navigateTo('/');
 };
 </script>
+
+<style scoped>
+/* Animación suave para el menú mobile */
+.U_Slideover-enter-active,
+.U_Slideover-leave-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.U_Slideover-enter-from,
+.U_Slideover-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+</style>

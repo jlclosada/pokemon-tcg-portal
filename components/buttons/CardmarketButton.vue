@@ -1,5 +1,5 @@
 <template>
-  <GlassButton label="Ver en Cardmarket" icon="🔗" :onClick="openCardmarket" />
+  <GlassButton label="Ver en Cardmarket" icon="🔗" :onClick="openCardmarket"/>
 </template>
 
 <script setup lang="ts">
