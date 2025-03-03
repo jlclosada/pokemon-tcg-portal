@@ -1,14 +1,16 @@
 <template>
-  <div class="mt-1 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 duration-500 ease-in-out">
+  <div class="p-4 w-full flex flex-col items-center space-y-3 ">
 
-    <!-- Botones -->
-    <div class="mt-2 flex justify-center gap-2 flex-col">
-      <FavoriteButton :cardName="card.name" />
-      <CardmarketButton :cardUrl="card.cardmarket?.url || card.tcgplayer?.url" />
-      <ViewCardDetail />
+    <!-- Botones en una fila más compacta -->
+    <div class="flex flex-wrap justify-center gap-2 w-full">
+      <FavoriteButton :cardName="card.name" class="w-auto px-4 py-2" />
+      <CardmarketButton :cardUrl="card.cardmarket?.url || card.tcgplayer?.url" class="w-auto px-4 py-2" />
+      <ViewCardDetail class="w-auto px-4 py-2" />
     </div>
+
   </div>
 </template>
+
 
 <script setup lang="ts">
 import CardmarketButton from "./buttons/CardmarketButton.vue";

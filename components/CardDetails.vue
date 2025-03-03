@@ -4,7 +4,9 @@
     @update:modelValue="emit('update:isOpen', $event)"
     class="transition-all duration-500 ease-in-out"
   >
-    <div class="p-4 flex-1 bg-gray-800 dark:bg-gray-900 relative rounded-2xl shadow-2xl transform-gpu scale-100 transition-all duration-300">
+    <div class="p-4 flex-1 bg-gray-800 dark:bg-gray-900 relative rounded-2xl shadow-2xl transform-gpu scale-100 transition-all duration-300 flex flex-col justify-between">
+
+      <!-- Botón de cierre -->
       <UButton
         color="gray"
         variant="ghost"
@@ -15,27 +17,34 @@
         padded
         @click="close"
       />
-      
-      <div v-if="card" class="mt-6">
-        <!-- Nombre de la carta con número de colección -->
-        <h2 class="text-3xl font-extrabold text-center mb-4 text-gradient bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-600">
-          {{ card.name }} 
+
+      <!-- Contenido principal -->
+      <div v-if="card" class="flex flex-col items-center justify-between h-full w-full px-2">
+
+        <!-- Título -->
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-center text-gradient bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-600 mb-2">
+          {{ card.name }}
           <span class="text-lg text-gray-300 dark:text-gray-500">#{{ card.number }}</span>
         </h2>
-        
-        <img
-          :src="card.images.large"
-          :alt="card.name"
-          class="w-full max-w-xs mx-auto rounded-lg shadow-lg hover:scale-105 transform transition-all duration-500"
-        />
 
-        <!-- Componente de Información -->
-        <PokemonInfo :card="card" />
+        <!-- Contenedor con efecto latente -->
+        <div class="relative flex items-center justify-center">
+          <div class="glow absolute w-48 h-64 md:w-60 md:h-80 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 opacity-60 blur-2xl" />
+
+          <img
+            :src="card.images.large"
+            :alt="card.name"
+            class="relative w-40 sm:w-52 md:w-64 lg:w-72 mx-auto rounded-lg shadow-lg hover:scale-105 transform transition-all duration-500"
+          />
+        </div>
+
+        <!-- Información -->
+        <PokemonInfo :card="card" class="w-full" />
       </div>
+
     </div>
   </USlideover>
 </template>
-
 <script setup lang="ts">
 import { defineEmits, defineProps } from 'vue';
 import PokemonInfo from './PokemonInfo.vue';
@@ -107,5 +116,25 @@ button:hover {
 .U_Slideover-enter, .U_Slideover-leave-to {
   transform: translateX(100%);
   opacity: 0;
+}
+
+/* Efecto latente de luz */
+@keyframes floatingGlow {
+  0% {
+    transform: translateY(-5px) scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(5px) scale(1.05);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-5px) scale(1);
+    opacity: 0.7;
+  }
+}
+
+.glow {
+  animation: floatingGlow 4s infinite ease-in-out;
 }
 </style>

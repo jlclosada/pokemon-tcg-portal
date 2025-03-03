@@ -18,7 +18,7 @@
     <!-- Grid de colecciones -->
     <ul v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
       <li
-        v-for="collection in collections.reverse()"
+        v-for="collection in collections"
         :key="collection.id"
         class="group relative p-6 rounded-2xl backdrop-blur-lg bg-white/50 dark:bg-gray-800/30 border border-gray-200/30 dark:border-gray-700/30 shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden"
         @click="goToCollection(collection.id)"
@@ -62,7 +62,7 @@ onMounted(async () => {
   const { $apiClient } = useNuxtApp();
   try {
     const response = await $apiClient("/sets");
-    collections.value = response.data;
+    collections.value = [...response.data].reverse()
   } catch (err) {
     error.value = "Error cargando las colecciones";
     console.error("Error:", err);
