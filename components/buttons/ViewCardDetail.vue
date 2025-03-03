@@ -1,13 +1,18 @@
 <template>
-    <GlassButton label="Ver carta en detalle" icon="🔍" :onClick="openCardmarket" />
-  </template>
+  <GlassButton label="Ver carta en detalle" icon="🔍" @click="redirectToMaintenance" />
+</template>
 
-  <script setup lang="ts">
-  import GlassButton from "./GlassButton.vue";
+<script setup lang="ts">
+import { useRouter } from "vue-router";
+import GlassButton from "./GlassButton.vue";
 
-  const props = defineProps<{ cardUrl: string }>();
+const router = useRouter();
 
-  </script>
+const redirectToMaintenance = () => {
+  router.push("/maintenance");
+};
+</script>
+
 
   <style scoped>
   /* Puedes agregar estilos aquí si es necesario */
