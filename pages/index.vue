@@ -3,7 +3,8 @@
     <!-- Sección de bienvenida -->
     <!--<GeneralCardSearch /> -->
     <HomeScreen />
-
+    <!-- Sección de imágenes destacadas -->
+    <BestCards />
     <!-- Sección de características -->
     <section class="py-16 bg-gray-900 text-white text-center">
       <h2 class="text-3xl font-bold mb-6">¿Por qué usar Pokémon Card Explorer?</h2>
@@ -25,9 +26,6 @@
         </div>
       </div>
     </section>
-
-    <!-- Sección de imágenes destacadas -->
-    <BestCards />
   </div>
 </template>
 

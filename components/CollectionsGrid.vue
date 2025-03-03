@@ -37,7 +37,7 @@
 
         <!-- Nombre y detalles -->
         <div class="mt-6 text-center space-y-2">
-          <p class="text-lg font-bold text-gray-900 dark:text-white line-clamp-1">
+          <p class="text-md font-bold text-gray-900 dark:text-white line-clamp-1">
             {{ collection.name }}
           </p>
           <span class="text-sm text-yellow-500 dark:text-yellow-400 font-medium opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
