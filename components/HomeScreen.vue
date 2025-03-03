@@ -8,9 +8,9 @@
       <!-- Pokéball animada -->
       <div class="relative group mb-12">
         <div class="absolute inset-0 bg-yellow-400/20 rounded-full blur-2xl opacity-0 group-hover:opacity-50 transition-opacity duration-300" />
-        <img 
-          src="/images/pokeball.png" 
-          alt="Pokéball" 
+        <img
+          src="/images/pokeball.png"
+          alt="Pokéball"
           class="w-32 h-32 transition-transform duration-500 group-hover:rotate-[360deg] animate-float"
         />
       </div>

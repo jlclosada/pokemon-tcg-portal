@@ -1,7 +1,7 @@
 <template>
   <nav class="fixed top-0 left-0 w-full backdrop-blur-lg bg-white/80 dark:bg-gray-900/80 border-b border-gray-200/30 dark:border-gray-700/30 z-50 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <!-- Logo con efecto mejorado -->
+      <!-- Logo with improved effect -->
       <ULink to="/" class="flex-shrink-0">
         <img
           src="/images/pokeball.png"
@@ -10,25 +10,25 @@
         />
       </ULink>
 
-      <!-- Menú hamburguesa mobile -->
-      <UButton 
-        @click="toggleMenu()" 
+      <!-- Mobile menu button -->
+      <UButton
+        @click="toggleMenu()"
         class="md:hidden p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors absolute right-4"
       >
-        <Icon 
-          :name="isMenuOpen ? 'pajamas:close' : 'pajamas:hamburger'" 
-          class="w-6 h-6 text-gray-900 dark:text-gray-100" 
+        <Icon
+          :name="isMenuOpen ? 'pajamas:close' : 'pajamas:hamburger'"
+          class="w-6 h-6 text-gray-900 dark:text-gray-100"
         />
       </UButton>
 
-      <!-- Navegación desktop -->
-      <div class="hidden md:flex items-center gap-6 mx-6 flex-1 justify-center">
+      <!-- Desktop navigation -->
+      <div class="hidden md:flex items-center gap-0.5 mx-6 flex-1 justify-center">
         <ULink
           v-for="link in horizontalLinks"
           :key="link.to"
           :to="link.to"
-          active-class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500"
-          class="px-4 py-2 font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors relative group"
+          :class="{ 'text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500 dark:from-blue-400 dark:to-purple-400': isActive(link.to) }"
+          class="px-3 py-2 font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors relative group"
         >
           <span class="relative z-10 flex items-center gap-1.5">
             <UIcon :name="link.icon" class="w-5 h-5" />
@@ -38,13 +38,13 @@
         </ULink>
       </div>
 
-      <!-- Menú mobile -->
-      <div 
-        v-if="isMenuOpen" 
+      <!-- Mobile menu -->
+      <div
+        v-if="isMenuOpen"
         class="md:hidden absolute top-full left-0 w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg border-b border-gray-200/30 dark:border-gray-700/30"
       >
-        <UVerticalNavigation 
-          :links="verticalLinks" 
+        <UVerticalNavigation
+          :links="verticalLinks"
           class="p-4"
           :ui="{
             wrapper: 'space-y-2',
@@ -55,9 +55,9 @@
         />
       </div>
 
-      <!-- Controles derecha -->
+      <!-- Right controls -->
       <div class="flex items-center gap-3 ml-auto">
-        <UToggle 
+        <UToggle
           v-model="isDark"
           class="rounded-full border border-gray-200 dark:border-gray-700"
           on-icon="i-heroicons-moon-20-solid"
@@ -87,11 +87,16 @@
 
 <script setup lang="ts">
 import { useAuthStore } from '~/stores/auth.store';
+import { useRoute, useRouter } from 'vue-router';
+import { useColorMode } from '@vueuse/core';
+import { ref, computed } from 'vue';
 
 const authStore = useAuthStore();
 const isMenuOpen = ref(false);
 const toggleMenu = () => (isMenuOpen.value = !isMenuOpen.value);
 const colorMode = useColorMode();
+const route = useRoute();
+const router = useRouter();
 
 const isDark = computed({
   get() {
@@ -101,6 +106,8 @@ const isDark = computed({
     colorMode.value = colorMode.value === 'dark' ? 'light' : 'dark';
   },
 });
+
+const isActive = (path: string) => route.path === path;
 
 const horizontalLinks = computed(() => {
   if (authStore.isAuthenticated) {
@@ -121,15 +128,15 @@ const horizontalLinks = computed(() => {
 
 const verticalLinks = computed(() => horizontalLinks.value);
 
-const login = () => navigateTo('/login');
+const login = () => router.push('/login');
 const logout = () => {
   authStore.logout();
-  navigateTo('/');
+  router.push('/');
 };
 </script>
 
 <style scoped>
-/* Animación suave para el menú mobile */
+/* Smooth animation for mobile menu */
 .U_Slideover-enter-active,
 .U_Slideover-leave-active {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

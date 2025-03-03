@@ -8,7 +8,7 @@
       <!-- <Sidebar class="hidden md:block w-64 p-6 bg-gray-50/50 dark:bg-gray-800/30 border-r border-gray-200/30 dark:border-gray-700/30" /> -->
 
       <!-- Contenido principal con efecto de profundidad -->
-      <main class="flex-1 p-6 md:p-8 lg:p-12 max-w-7xl mx-auto w-full">
+      <main class="flex-1">
         <div class="space-y-8 animate-fade-in">
           <slot />
         </div>
@@ -36,6 +36,17 @@ const isDark = computed({
     colorMode.value = colorMode.value === "dark" ? "light" : "dark";
   },
 });
+
+import { watch } from "vue";
+
+watch(isDark, (newVal) => {
+  if (newVal) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
+});
+
 </script>
 
 <style scoped>
@@ -55,7 +66,7 @@ const isDark = computed({
 }
 
 .bg-gradient-to-br {
-  background-image: 
+  background-image:
     linear-gradient(
       to bottom right,
       rgba(249, 250, 251, 0.8) 0%,
@@ -65,7 +76,7 @@ const isDark = computed({
 }
 
 .dark .bg-gradient-to-br {
-  background-image: 
+  background-image:
     linear-gradient(
       to bottom right,
       rgba(17, 24, 39, 0.9) 0%,

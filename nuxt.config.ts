@@ -12,11 +12,12 @@ export default defineNuxtConfig({
   },
   css: ['~/assets/css/main.css'],
   pages: true,
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   modules: [
     '@nuxt/ui',
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
+    '@nuxtjs/color-mode',
   ],
   runtimeConfig: {
     pokemonTcgApiKey: process.env.NUXT_POKEMON_TCG_API_KEY,

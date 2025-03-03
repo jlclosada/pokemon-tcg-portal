@@ -27,12 +27,7 @@
     </section>
 
     <!-- Sección de imágenes destacadas -->
-    <section class="py-16 bg-gray-100 dark:bg-gray-800 text-center">
-      <h2 class="text-3xl font-bold mb-6 text-gray-900 dark:text-white">Cartas Destacadas</h2>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
-        <img v-for="n in 4" :key="n" :src="`/images/highlighted-${n}.jpg`" class="w-full rounded-lg shadow-lg" />
-      </div>
-    </section>
+    <BestCards />
   </div>
 </template>
 
