@@ -1,6 +1,5 @@
 <template>
-  <nav
-    class="fixed top-0 left-0 w-full backdrop-blur-lg bg-white/80 dark:bg-gray-900/80 border-b border-gray-200/30 dark:border-gray-700/30 z-50 shadow-sm">
+  <nav class="fixed top-0 left-0 w-full backdrop-blur-lg bg-white/80 dark:bg-gray-900/80 border-b border-gray-200/30 dark:border-gray-700/30 z-50 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between relative">
 
       <!-- Logo -->
@@ -9,17 +8,17 @@
           class="w-12 h-12 object-contain cursor-pointer transition-transform duration-300 hover:scale-110" />
       </ULink>
 
-      <!-- Enlaces centrados en móvil -->
+      <!-- Enlaces centrados en pantalla grande -->
       <div class="hidden md:flex items-center gap-4 mx-auto flex-1 justify-center">
         <ULink v-for="link in horizontalLinks" :key="link.to" :to="link.to"
           :class="{ 'text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500 dark:from-blue-400 dark:to-purple-400': isActive(link.to) }"
           class="px-3 py-2 font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors relative group">
           <span class="relative z-10 flex items-center gap-1.5">
-            <UIcon :name="link.icon" class="w-5 h-5" />
+            <img v-if="link.iconType === 'image'" :src="link.icon" class="w-5 h-5 dark:filter dark:invert" alt="Icon" />
+            <UIcon v-else :name="link.icon" class="w-5 h-5" />
             {{ link.label }}
           </span>
-          <span
-            class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+          <span class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity" />
         </ULink>
       </div>
 
@@ -44,18 +43,23 @@
       <!-- Menú móvil -->
       <div v-if="isMenuOpen"
         class="md:hidden absolute top-full left-0 w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg border-b border-gray-200/30 dark:border-gray-700/30">
-        <UVerticalNavigation :links="verticalLinks" class="p-4" :ui="{
-          wrapper: 'space-y-2',
-          base: 'group rounded-lg px-4 py-3 transition-colors',
-          active: 'bg-gradient-to-r from-blue-500/10 to-purple-500/10 text-blue-600 dark:text-blue-400',
-          inactive: 'hover:bg-gray-100 dark:hover:bg-gray-800'
-        }" @click="isMenuOpen = false" />
-
+        <ul class="p-4 space-y-2">
+          <li v-for="link in verticalLinks" :key="link.to">
+            <ULink :to="link.to" class="flex items-center gap-2 p-3 rounded-lg transition-colors"
+              :class="{
+                'bg-gradient-to-r from-blue-500/10 to-purple-500/10 text-blue-600 dark:text-blue-400': isActive(link.to),
+                'hover:bg-gray-100 dark:hover:bg-gray-800': !isActive(link.to)
+              }">
+              <img v-if="link.iconType === 'image'" :src="link.icon" class="w-6 h-6 dark:filter dark:invert" alt="Icon" />
+              <UIcon v-else :name="link.icon" class="w-6 h-6" />
+              <span>{{ link.label }}</span>
+            </ULink>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
 </template>
-
 
 <script setup lang="ts">
 import { useColorMode } from '@vueuse/core';
@@ -81,32 +85,34 @@ const isDark = computed({
 
 const isActive = (path: string) => route.path === path;
 
+// Links en la barra de navegación
 const horizontalLinks = computed(() => {
   if (authStore.isAuthenticated) {
     return [
-      { label: "Home", icon: 'i-heroicons-home', to: "/" },
-      { label: "Profile", icon: 'i-heroicons-user', to: "/profile" },
-      { label: "Collections", icon: 'i-heroicons-circle-stack', to: "/collections" },
-      { label: "Favorites", icon: 'i-heroicons-heart', to: "/favorites" },
-      { label: "About us", icon: 'i-heroicons-information-circle', to: "/about" }
+      { label: "Home", icon: 'i-heroicons-home', iconType: 'icon', to: "/" },
+      { label: "Pokedex", icon: '/icons/pokedex.svg', iconType: 'image', to: "/pokedex" }, // Nuevo enlace
+      { label: "Profile", icon: 'i-heroicons-user', iconType: 'icon', to: "/profile" },
+      { label: "Collections", icon: 'i-heroicons-circle-stack', iconType: 'icon', to: "/collections" },
+      { label: "Favorites", icon: 'i-heroicons-heart', iconType: 'icon', to: "/favorites" },
+      { label: "About us", icon: 'i-heroicons-information-circle', iconType: 'icon', to: "/about" }
     ];
   } else {
     return [
-      { label: "Home", icon: 'i-heroicons-home', to: "/" },
-      { label: "About us", icon: 'i-heroicons-information-circle', to: "/about" },
+      { label: "Home", icon: 'i-heroicons-home', iconType: 'icon', to: "/" },
+      { label: "Pokedex", icon: '/icons/pokedex.svg', iconType: 'image', to: "/pokedex" }, // Nuevo enlace
+      { label: "About us", icon: 'i-heroicons-information-circle', iconType: 'icon', to: "/about" },
     ];
   }
 });
 
+// Links en el menú móvil
 const verticalLinks = computed(() => {
   const links = horizontalLinks.value.slice(); // Copia el array sin modificar el original
   if (!authStore.isAuthenticated) {
-    links.push({ label: "Login", icon: "i-heroicons-arrow-long-right", to: "/login" });
+    links.push({ label: "Login", icon: "i-heroicons-arrow-long-right", iconType: 'icon', to: "/login" });
   }
   return links;
 });
-
-
 
 const login = () => router.push('/login');
 const logout = () => {
@@ -115,8 +121,9 @@ const logout = () => {
 };
 </script>
 
+
 <style scoped>
-/* Smooth animation for mobile menu */
+/* Animación del menú móvil */
 .U_Slideover-enter-active,
 .U_Slideover-leave-active {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
