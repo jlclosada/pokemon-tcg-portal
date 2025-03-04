@@ -8,111 +8,147 @@
           class="w-12 h-12 object-contain cursor-pointer transition-transform duration-300 hover:scale-110" />
       </ULink>
 
-      <!-- Enlaces centrados en pantalla grande -->
+      <!-- Enlaces centrados en pantallas grandes -->
       <div class="hidden md:flex items-center gap-4 mx-auto flex-1 justify-center">
         <ULink v-for="link in horizontalLinks" :key="link.to" :to="link.to"
-          :class="{ 'text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500 dark:from-blue-400 dark:to-purple-400': isActive(link.to) }"
-          class="px-3 py-2 font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors relative group">
-          <span class="relative z-10 flex items-center gap-1.5">
+          :class="{ 'text-blue-500 font-semibold': isActive(link.to) }"
+          class="px-3 py-2 font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+          <span class="flex items-center gap-1.5">
             <img v-if="link.iconType === 'image'" :src="link.icon" class="w-5 h-5 dark:filter dark:invert" alt="Icon" />
             <UIcon v-else :name="link.icon" class="w-5 h-5" />
             {{ link.label }}
           </span>
-          <span class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity" />
         </ULink>
       </div>
 
-      <!-- Botón del menú móvil -->
-      <UButton @click="toggleMenu()"
-        class="md:hidden p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors absolute right-16">
-        <Icon :name="isMenuOpen ? 'pajamas:close' : 'pajamas:hamburger'"
-          class="w-6 h-6 text-gray-900 dark:text-gray-100" />
-      </UButton>
+      <!-- Controles a la derecha -->
+      <div class="flex items-center gap-3">
+        <!-- Botón de menú hamburguesa (solo en móviles) -->
+        <button @click="isMenuOpen = !isMenuOpen"
+          class="md:hidden p-2 rounded-md bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition">
+          <UIcon name="i-heroicons-bars-3" class="w-6 h-6 text-gray-600 dark:text-gray-300" />
+        </button>
 
-      <!-- Controles (Modo oscuro y Login) alineados a la derecha -->
-      <div class="flex items-center gap-3 absolute right-4">
+        <!-- Modo oscuro -->
         <UToggle v-model="isDark" class="rounded-full border border-gray-200 dark:border-gray-700"
           on-icon="i-heroicons-moon-20-solid" off-icon="i-heroicons-sun-20-solid" size="lg" />
-        <UButton v-if="authStore.isAuthenticated" @click="logout" color="gray" variant="ghost"
-          class="inline-flex md:inline-flex" label="Logout" />
+
+        <!-- Botón Login/Logout -->
+        <UButton v-if="authStore.isAuthenticated" @click="logout" color="gray" variant="ghost" label="Logout" />
         <UButton v-else @click="login" color="gray" variant="solid"
           class="hidden md:inline-flex bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600"
           label="Login" />
-      </div>
 
-      <!-- Menú móvil -->
-      <div v-if="isMenuOpen"
-        class="md:hidden absolute top-full left-0 w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg border-b border-gray-200/30 dark:border-gray-700/30">
-        <ul class="p-4 space-y-2">
-          <li v-for="link in verticalLinks" :key="link.to">
-            <ULink :to="link.to" class="flex items-center gap-2 p-3 rounded-lg transition-colors"
-              :class="{
-                'bg-gradient-to-r from-blue-500/10 to-purple-500/10 text-blue-600 dark:text-blue-400': isActive(link.to),
-                'hover:bg-gray-100 dark:hover:bg-gray-800': !isActive(link.to)
-              }">
-              <img v-if="link.iconType === 'image'" :src="link.icon" class="w-6 h-6 dark:filter dark:invert" alt="Icon" />
-              <UIcon v-else :name="link.icon" class="w-6 h-6" />
-              <span>{{ link.label }}</span>
-            </ULink>
-          </li>
-        </ul>
+        <!-- Dropdown de idioma -->
+        <div class="relative">
+          <button @click="toggleDropdown"
+            class="flex items-center gap-1 p-2 border rounded-md shadow-sm bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700">
+            <img :src="selectedLanguage.flag" class="w-4 h-4" alt="flag" />
+            <Icon name="i-heroicons-chevron-down" class="w-3 h-3 text-gray-500 dark:text-gray-300" />
+          </button>
+
+          <div v-if="isDropdownOpen"
+            class="absolute right-0 mt-1 w-28 bg-white dark:bg-gray-800 border rounded-md shadow-lg overflow-hidden">
+            <ul class="py-1 text-sm">
+              <li v-for="lang in languages" :key="lang.code" @click="changeLanguage(lang.code)"
+                class="flex items-center gap-2 px-3 py-1 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
+                :class="{ 'font-semibold': lang.code === locale }">
+                <img :src="lang.flag" class="w-4 h-4" alt="flag" />
+                <span>{{ lang.name }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
+
+  <!-- Menú lateral en móviles -->
+  <transition name="slide">
+    <div v-if="isMenuOpen" class="fixed inset-0 bg-black/50 z-50" @click="isMenuOpen = false"></div>
+  </transition>
+
+  <transition name="slide">
+    <div v-if="isMenuOpen" class="fixed top-0 left-0 w-64 h-full bg-white dark:bg-gray-900 shadow-lg z-50 p-4 flex flex-col">
+      <!-- Botón para cerrar -->
+      <button @click="isMenuOpen = false"
+        class="self-end p-2 rounded-md bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition">
+        <UIcon name="i-heroicons-x-mark" class="w-6 h-6 text-gray-600 dark:text-gray-300" />
+      </button>
+
+      <!-- Enlaces del menú -->
+      <nav class="flex flex-col gap-3 mt-4">
+        <ULink v-for="link in horizontalLinks" :key="link.to" :to="link.to"
+          @click="isMenuOpen = false"
+          class="flex items-center gap-3 px-3 py-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 transition">
+          <img v-if="link.iconType === 'image'" :src="link.icon" class="w-6 h-6 dark:filter dark:invert" alt="Icon" />
+          <UIcon v-else :name="link.icon" class="w-6 h-6" />
+          {{ link.label }}
+        </ULink>
+      </nav>
+    </div>
+  </transition>
 </template>
 
 <script setup lang="ts">
 import { useColorMode } from '@vueuse/core';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '~/stores/auth.store';
+import { useI18n, useCookie } from '#imports';
 
+const { locale, t } = useI18n();
 const authStore = useAuthStore();
-const isMenuOpen = ref(false);
-const toggleMenu = () => (isMenuOpen.value = !isMenuOpen.value);
-const colorMode = useColorMode();
 const route = useRoute();
 const router = useRouter();
+const colorMode = useColorMode();
+const isMenuOpen = ref(false);
+const isDropdownOpen = ref(false);
 
 const isDark = computed({
-  get() {
-    return colorMode.value === 'dark';
-  },
-  set() {
-    colorMode.value = colorMode.value === 'dark' ? 'light' : 'dark';
-  },
+  get: () => colorMode.value === 'dark',
+  set: () => colorMode.value = colorMode.value === 'dark' ? 'light' : 'dark'
 });
+
+const languages = [
+  { code: 'es', name: 'ES', flag: '/icons/es.svg' },
+  { code: 'en', name: 'EN', flag: '/icons/en.svg' }
+];
+
+const langCookie = useCookie('lang');
+
+if (langCookie.value) {
+  locale.value = langCookie.value;
+}
+
+watch(locale, (newLocale) => {
+  langCookie.value = newLocale;
+  window.location.reload();
+});
+
+const selectedLanguage = computed(() => languages.find(lang => lang.code === locale.value) || languages[0]);
+
+const toggleDropdown = () => {
+  isDropdownOpen.value = !isDropdownOpen.value;
+};
+
+const changeLanguage = (langCode: string) => {
+  locale.value = langCode;
+  langCookie.value = langCode;
+  isDropdownOpen.value = false;
+};
 
 const isActive = (path: string) => route.path === path;
 
-// Links en la barra de navegación
-const horizontalLinks = computed(() => {
-  if (authStore.isAuthenticated) {
-    return [
-      { label: "Home", icon: 'i-heroicons-home', iconType: 'icon', to: "/" },
-      { label: "Pokedex", icon: '/icons/pokedex.svg', iconType: 'image', to: "/pokedex" }, // Nuevo enlace
-      { label: "Profile", icon: 'i-heroicons-user', iconType: 'icon', to: "/profile" },
-      { label: "Collections", icon: 'i-heroicons-circle-stack', iconType: 'icon', to: "/collections" },
-      { label: "Favorites", icon: 'i-heroicons-heart', iconType: 'icon', to: "/favorites" },
-      { label: "About us", icon: 'i-heroicons-information-circle', iconType: 'icon', to: "/about" }
-    ];
-  } else {
-    return [
-      { label: "Home", icon: 'i-heroicons-home', iconType: 'icon', to: "/" },
-      { label: "Pokedex", icon: '/icons/pokedex.svg', iconType: 'image', to: "/pokedex" }, // Nuevo enlace
-      { label: "About us", icon: 'i-heroicons-information-circle', iconType: 'icon', to: "/about" },
-    ];
-  }
-});
-
-// Links en el menú móvil
-const verticalLinks = computed(() => {
-  const links = horizontalLinks.value.slice(); // Copia el array sin modificar el original
-  if (!authStore.isAuthenticated) {
-    links.push({ label: "Login", icon: "i-heroicons-arrow-long-right", iconType: 'icon', to: "/login" });
-  }
-  return links;
-});
+const horizontalLinks = computed(() => authStore.isAuthenticated ? [
+  { label: t("home"), icon: 'i-heroicons-home', iconType: 'icon', to: "/" },
+  { label: t("pokedex"), icon: '/icons/pokedex.svg', iconType: 'image', to: "/pokedex" },
+  { label: t("about_us"), icon: 'i-heroicons-information-circle', iconType: 'icon', to: "/about" }
+] : [
+  { label: t("home"), icon: 'i-heroicons-home', iconType: 'icon', to: "/" },
+  { label: t("pokedex"), icon: '/icons/pokedex.svg', iconType: 'image', to: "/pokedex" },
+  { label: t("about_us"), icon: 'i-heroicons-information-circle', iconType: 'icon', to: "/about" }
+]);
 
 const login = () => router.push('/login');
 const logout = () => {
@@ -121,17 +157,11 @@ const logout = () => {
 };
 </script>
 
-
 <style scoped>
-/* Animación del menú móvil */
-.U_Slideover-enter-active,
-.U_Slideover-leave-active {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.slide-enter-active, .slide-leave-active {
+  transition: transform 0.3s ease-in-out;
 }
-
-.U_Slideover-enter-from,
-.U_Slideover-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
+.slide-enter-from, .slide-leave-to {
+  transform: translateX(-100%);
 }
 </style>

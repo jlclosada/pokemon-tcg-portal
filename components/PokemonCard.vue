@@ -45,28 +45,26 @@
             <!-- Detalles -->
             <div class="flex flex-col justify-center">
               <h2 class="text-4xl font-bold capitalize text-gray-800 dark:text-gray-200 mb-2 text-center md:text-left">
-                {{ pokemonDetails.name }}
+                #{{ pokemonDetails.id }} {{ pokemonDetails.name }}
               </h2>
 
               <div class="flex flex-wrap justify-center md:justify-start gap-2 mb-4">
-                <span v-for="type in pokemonDetails.types" :key="type.type.name" :class="getTypeColor(type.type.name)"
-                  class="px-3 py-1 text-lg font-semibold rounded-lg shadow-md">
-                  {{ type.type.name }}
+                <span v-for="type in pokemonDetails.types"
+                      :key="type.type.name"
+                      :class="getTypeColor(type.type.name)"
+                      class="px-3 py-1 text-lg font-semibold rounded-lg shadow-md">
+                  {{ translateType(type.type.name) }}
                 </span>
               </div>
-
               <p class="text-gray-600 dark:text-gray-300 text-lg">
-                <strong>Número Pokédex:</strong> #{{ pokemonDetails.id }}
+                <strong>{{ t('weight') }}:</strong> {{ pokemonDetails.weight / 10 }} kg
               </p>
               <p class="text-gray-600 dark:text-gray-300 text-lg">
-                <strong>Peso:</strong> {{ pokemonDetails.weight / 10 }} kg
-              </p>
-              <p class="text-gray-600 dark:text-gray-300 text-lg">
-                <strong>Altura:</strong> {{ pokemonDetails.height / 10 }} m
+                <strong>{{ t('height') }}:</strong> {{ pokemonDetails.height / 10 }} m
               </p>
 
               <!-- Habilidades -->
-              <h3 class="mt-6 text-2xl font-semibold">Habilidades:</h3>
+              <h3 class="mt-6 text-2xl font-semibold">{{ t('abilities') }}:</h3>
               <ul v-if="pokemonDetails.abilities?.length" class="list-disc list-inside text-gray-700 dark:text-gray-300 text-lg">
                 <li v-for="ability in pokemonDetails.abilities" :key="ability.ability.name">
                   {{ ability.ability.name }}
@@ -74,7 +72,7 @@
               </ul>
 
               <!-- Estadísticas -->
-              <h3 class="mt-6 text-2xl font-semibold">Estadísticas:</h3>
+              <h3 class="mt-6 text-2xl font-semibold">{{ t('statistics')}}:</h3>
               <div v-if="pokemonDetails.stats?.length" class="grid grid-cols-1 gap-4">
                 <div v-for="stat in pokemonDetails.stats" :key="stat.stat.name">
                   <div class="flex justify-between items-center mb-1">
@@ -95,7 +93,7 @@
 
 
               <!-- Movimientos -->
-              <h3 class="mt-6 text-2xl font-semibold">Movimientos:</h3>
+              <h3 class="mt-6 text-2xl font-semibold">{{ t('movements') }}:</h3>
               <div v-if="pokemonDetails.moves?.length" class="flex flex-wrap gap-2">
                 <span v-for="move in pokemonDetails.moves.slice(0, 10)" :key="move.move.name"
                   class="bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-lg text-sm font-semibold shadow">
@@ -117,6 +115,7 @@
 <script setup>
 import axios from 'axios';
 import { ref } from 'vue';
+import { useI18n } from "#imports";
 
 const props = defineProps({
   pokemon: {
@@ -124,9 +123,14 @@ const props = defineProps({
     required: true
   }
 });
+const { t } = useI18n(); // Accede a la función de traducción
 
 const isModalOpen = ref(false);
 const pokemonDetails = ref(null);
+const translateType = (type) => {
+  return t(type) || type; // Devuelve la traducción si existe, si no, el mismo valor
+};
+
 
 const openModal = async () => {
   isModalOpen.value = true;
@@ -151,6 +155,27 @@ const getStatColor = (stat) => {
   if (stat > 70) return 'bg-green-500 dark:bg-green-400'; // Verde
   if (stat > 50) return 'bg-yellow-500 dark:bg-yellow-400'; // Amarillo
   return 'bg-red-500 dark:bg-red-400'; // Rojo
+};
+
+const typeTranslations = {
+  fire: t("fire"),
+  water: t("water"),
+  grass: t("grass"),
+  electric: t("electric"),
+  ice: t("ice"),
+  fighting: t("fighting"),
+  poison: t("poison"),
+  ground: t("ground"),
+  flying: t("flying"),
+  psychic: t("psychic"),
+  bug: t("bug"),
+  rock: t("rock"),
+  ghost: t("ghost"),
+  dragon: t("dragon"),
+  dark: t("dark"),
+  steel: t("steel"),
+  fairy: t("fairy"),
+  normal: t("normal"),
 };
 
 const getTypeColor = (type) => {
