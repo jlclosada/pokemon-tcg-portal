@@ -1,8 +1,8 @@
 <template>
-  <div class="flex flex-col min-h-screen overflow-x-hidden">
+  <div class="relative flex flex-col overflow-x-hidden">
     <!-- Video de fondo -->
     <div class="video-background">
-      <video autoplay loop muted class="video" src="/videos/pokemon_intro.mp4"></video>
+      <video autoplay loop muted class="video" src="/videos/pokemon_bg.mp4"></video>
     </div>
 
     <!-- Sección de Bienvenida -->
@@ -80,30 +80,32 @@ const newsData = [
 <style scoped>
 /* Estilo para el video de fondo */
 .video-background {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: -1; /* El video estará en el fondo */
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; /* Asegura que el video quede debajo del contenido */
   overflow: hidden;
-  height: 100vh; /* Ajuste dinámico en relación al tamaño de la pantalla */
-  width: 100vw;  /* Se ajusta al ancho de la pantalla */
+  pointer-events: none;
 }
 
+
 .video {
+  width: 100%;
+  height: 100%;
   object-fit: cover; /* Asegura que el video cubra toda la pantalla */
-  width: 100%;       /* El video ocupa el 100% del ancho */
-  height: 100%;      /* El video ocupa el 100% de la altura */
-  object-position: center; /* Centra el video */
+  object-position: center;
 }
+
 
 /* Asegurar que el contenido dentro del video no se desborde en dispositivos pequeños */
 @media (max-width: 640px) {
   .video-background {
-    height: 80vh; /* Reducir la altura del video en pantallas pequeñas */
+    height: 100vh; /* Mantiene la altura en móviles */
   }
 }
+
 
 /* Animación de desvanecimiento */
 @keyframes fadeIn {
@@ -162,13 +164,13 @@ const newsData = [
 }
 
 /* Scroll futurista */
-body {
-  scroll-behavior: smooth;
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Evita scroll horizontal */
 }
 
-html {
-  scroll-behavior: smooth;
-}
 
 /* Efecto de desplazamiento futurista */
 ::-webkit-scrollbar {
@@ -182,6 +184,10 @@ html {
 
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
+}
+section {
+  position: relative;
+  z-index: 10;
 }
 
 </style>

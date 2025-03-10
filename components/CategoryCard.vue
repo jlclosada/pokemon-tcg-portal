@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 bg-white dark:bg-gray-900 rounded-lg shadow-lg transform hover:scale-105 transition-transform dark:text-white">
+  <div class="p-6 bg-transparent backdrop-blur-md rounded-lg shadow-lg transform hover:scale-105 transition-transform dark:text-white">
     <!-- Si el icono es una imagen -->
     <div v-if="iconType === 'image'" class="w-12 h-12 mx-auto mb-4 dark:text-white">
       <img :src="icon" alt="icon" class="w-full h-full object-contain" />

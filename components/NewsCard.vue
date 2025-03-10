@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden hover:scale-105 transition-transform">
+  <div class="bg-transparent backdrop-blur-md rounded-lg shadow-lg overflow-hidden hover:scale-105 transition-transform">
     <img :src="image" class="w-full h-40 object-cover" alt="Noticia">
     <div class="p-4">
       <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ title }}</h3>
