@@ -1,9 +1,8 @@
 <template>
+  <!-- Contenido de la página de mantenimiento -->
   <div class="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white relative overflow-hidden">
-
     <!-- Efecto de fondo dinámico -->
     <div class="absolute inset-0 bg-gradient-to-r from-purple-700 to-blue-600 opacity-40 blur-2xl animate-pulse"></div>
-
     <!-- Contenido principal -->
     <div class="relative z-10 text-center p-6 max-w-lg">
 

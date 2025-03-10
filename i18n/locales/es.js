@@ -1,3 +1,9 @@
+// Usage: import es from 'i18n/locales/es.js';
+// Exportamos un objeto con las traducciones en español
+// Este archivo se importa en i18n.js
+// Este archivo se importa en src/components/Navbar.vue
+// Este archivo se importa en src/components/Profile.vue
+// Este archivo se importa en src/components/Statistics.vue
 export default {
   weight: "Peso",
   height: "Altura",
@@ -31,4 +37,5 @@ export default {
   dark: "Siniestro",
   steel: "Acero",
   normal: "Normal",
+  card_explorer: "Cartas",
 };

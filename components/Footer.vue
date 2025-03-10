@@ -32,14 +32,14 @@
             Términos de servicio
           </p>
         </div>
+      </div>
 
-        <!-- Copyright con animación sutil -->
-        <div class="mt-12 border-t border-gray-700/30 pt-8 text-center">
-          <p class="text-xs text-gray-400/75 animate-pulse-slow">
-            © 2025 José Luis Cáceres Losada <br>Todos los derechos reservados<br>
-            No afiliado a The Pokémon Company International
-          </p>
-        </div>
+      <!-- Copyright con animación sutil y centrado -->
+      <div class="flex justify-center mt-12 border-t border-gray-700/30 pt-8 text-center">
+        <p class="text-xs text-gray-400/75 animate-pulse-slow">
+          © 2025 José Luis Cáceres Losada <br>Todos los derechos reservados<br>
+          No afiliado a The Pokémon Company International
+        </p>
       </div>
     </div>
   </footer>
@@ -63,12 +63,12 @@ const goToMaintenance = () => {
 </script>
 
 <style scoped>
+/* Efecto de escala al hacer hover en el logo */
 .animate-pulse-slow {
   animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 @keyframes pulse {
-
   0%,
   100% {
     opacity: 1;

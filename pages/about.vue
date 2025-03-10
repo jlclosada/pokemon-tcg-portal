@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted } from "vue"; // Importar ref y onMounted
 
 // Lista de preguntas y respuestas
 const faqs = ref([
@@ -36,10 +36,10 @@ const toggleDropdown = (index: number) => {
 // Animación de aparición progresiva de secciones
 const fadeIn = ref(false);
 
-onMounted(() => {
-  setTimeout(() => {
-    fadeIn.value = true;
-  }, 300);
+onMounted(() => { // Mostrar las secciones con una animación de fade-in
+  setTimeout(() => { // Retrasar la animación para que se vea correctamente
+    fadeIn.value = true; // Mostrar las secciones
+  }, 300); // Retraso de 300ms
 });
 </script>
 

@@ -21,32 +21,30 @@
 </template>
 
 <script setup lang="ts">
-import { useColorMode } from "@vueuse/core";
-import { computed } from "vue";
-import Navbar from "~/components/Navbar.vue";
-import Sidebar from "~/components/Sidebar.vue";
-import Footer from "~/components/Footer.vue";
+import { useColorMode } from "@vueuse/core"; // Importar hook de color mode
+import { computed } from "vue"; // Importar computed para el color mode
+import Navbar from "~/components/Navbar.vue"; // Importar componente Navbar
+import Sidebar from "~/components/Sidebar.vue"; // Importar componente Sidebar
+import Footer from "~/components/Footer.vue"; // Importar componente Footer
+import { watch } from "vue"; // Importar watch para observar cambios en el color mode
 
-const colorMode = useColorMode();
-const isDark = computed({
+const colorMode = useColorMode(); // Usar hook de color mode
+const isDark = computed({ // Crear computed para el color mode
   get() {
-    return colorMode.value === "dark";
+    return colorMode.value === "dark"; // Devolver si el color mode es oscuro
   },
   set() {
-    colorMode.value = colorMode.value === "dark" ? "light" : "dark";
+    colorMode.value = colorMode.value === "dark" ? "light" : "dark"; // Cambiar el color mode al contrario del actual al setear el valor
   },
 });
 
-import { watch } from "vue";
-
-watch(isDark, (newVal) => {
-  if (newVal) {
-    document.documentElement.classList.add("dark");
+watch(isDark, (newVal) => { // Observar cambios en el color mode
+  if (newVal) { // Si el color mode es oscuro
+    document.documentElement.classList.add("dark"); // Añadir clase dark al documento
   } else {
-    document.documentElement.classList.remove("dark");
+    document.documentElement.classList.remove("dark"); // Quitar clase dark al documento
   }
 });
-
 </script>
 
 <style scoped>

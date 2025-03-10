@@ -143,10 +143,12 @@ const isActive = (path: string) => route.path === path;
 const horizontalLinks = computed(() => authStore.isAuthenticated ? [
   { label: t("home"), icon: 'i-heroicons-home', iconType: 'icon', to: "/" },
   { label: t("pokedex"), icon: '/icons/pokedex.svg', iconType: 'image', to: "/pokedex" },
+  { label: t("card_explorer"), icon: '/icons/card.png', iconType: 'image', to: "/cards" },
   { label: t("about_us"), icon: 'i-heroicons-information-circle', iconType: 'icon', to: "/about" }
 ] : [
   { label: t("home"), icon: 'i-heroicons-home', iconType: 'icon', to: "/" },
   { label: t("pokedex"), icon: '/icons/pokedex.svg', iconType: 'image', to: "/pokedex" },
+  { label: t("card_explorer"), icon: '/icons/card.png', iconType: 'image', to: "/cards" },
   { label: t("about_us"), icon: 'i-heroicons-information-circle', iconType: 'icon', to: "/about" }
 ]);
 
