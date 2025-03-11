@@ -55,6 +55,7 @@ export default defineNuxtConfig({
     public: {
       pokemonTcgApiBase: 'https://api.pokemontcg.io/v2', // URL de la API de Pokemon TCG
       backendBaseUrl: 'http://localhost:8000/api', // URL de la API de Django
+      youtubeApiKey: process.env.NUXT_YOUTUBE_API_KEY, // API Key de YouTube
     },
   },
 });
