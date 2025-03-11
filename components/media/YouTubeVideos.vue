@@ -13,7 +13,7 @@
     </div>
     <div v-if="quotaExceeded" class="text-center text-yellow-400 font-bold mt-6">
       Estamos tiesos 😭, colabora con el proyecto para poder hacer peticiones a las APIs.
-      <br>Intentalo mañana, vale?
+      <br>Inténtalo mañana, vale?
     </div>
 
     <!-- Listado de videos -->
@@ -52,9 +52,11 @@
 
 <script setup>
 import { ref, onMounted, computed, defineEmits } from "vue";
-import { useNuxtApp } from "#app";
+import { fetchYouTubeVideos } from "@/utils/youtubeApi";
+import { useRuntimeConfig } from "#imports"; // 🔥 Se usa solo dentro del setup
 
-const { $youtube } = useNuxtApp(); // 🔥 Obtener la función desde el plugin
+const config = useRuntimeConfig();
+const API_KEY = config.public.youtubeApiKey; // ✅ Obtener la API Key dentro del setup
 
 const videos = ref([]);
 const loading = ref(true);
@@ -62,11 +64,25 @@ const error = ref(false);
 const quotaExceeded = ref(false);
 const emit = defineEmits(["update-channels"]);
 
+// Función para actualizar la lista de canales
+const updateChannelList = () => {
+  const uniqueChannels = Array.from(
+    new Set(videos.value.map((video) => video.channel))
+  ).map((channel) => {
+    return {
+      name: channel,
+      url: videos.value.find((video) => video.channel === channel)?.channelUrl || "#",
+    };
+  });
+
+  emit("update-channels", uniqueChannels);
+};
+
+// Llamada a la API al montar el componente
 onMounted(async () => {
   try {
-    videos.value = await $youtube.fetchVideos(); // 👈 Usamos la función del plugin
+    videos.value = await fetchYouTubeVideos(API_KEY); // 🔥 Pasamos la API Key aquí
 
-    // Si la API no devolvió videos, mostramos el mensaje de cuota agotada
     if (!videos.value.length) {
       quotaExceeded.value = true;
     }
@@ -75,7 +91,6 @@ onMounted(async () => {
   } catch (err) {
     console.error("Error al obtener videos:", err);
 
-    // Si el error es de cuota, mostramos el mensaje especial
     if (err.response?.data?.error?.errors[0]?.reason === "quotaExceeded") {
       quotaExceeded.value = true;
     } else {
@@ -93,18 +108,4 @@ const groupedVideos = computed(() => {
     return acc;
   }, {});
 });
-
-// Generar la lista de canales dinámicamente
-const updateChannelList = () => {
-  const uniqueChannels = Array.from(
-    new Set(videos.value.map((video) => video.channel))
-  ).map((channel) => {
-    return {
-      name: channel,
-      url: videos.value.find((video) => video.channel === channel).channelUrl,
-    };
-  });
-
-  emit("update-channels", uniqueChannels);
-};
 </script>

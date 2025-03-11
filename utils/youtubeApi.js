@@ -1,6 +1,5 @@
 import axios from "axios";
 
-const API_KEY = useRuntimeConfig().public.youtubeApiKey;
 const CHANNELS = [
   "UCRSvtnW26zUos-X1uWfc7ZQ", // Canal de itsMrJoss
   "UClBxL8-JaQOWoiAgsbT2DKA", // Canal de Pasalapasa
@@ -8,7 +7,7 @@ const CHANNELS = [
 ];
 
 // Obtener los videos de los canales
-export async function fetchYouTubeVideos() {
+export async function fetchYouTubeVideos(apiKey) {
   try {
     const videos = [];
 
@@ -17,7 +16,7 @@ export async function fetchYouTubeVideos() {
         `https://www.googleapis.com/youtube/v3/search`,
         {
           params: {
-            key: API_KEY,
+            key: apiKey, // 🔥 Ahora la API Key viene del argumento
             channelId,
             part: "snippet",
             maxResults: 6,
@@ -41,30 +40,6 @@ export async function fetchYouTubeVideos() {
     return videos;
   } catch (error) {
     console.error("Error al obtener videos de YouTube:", error);
-    throw error;
-  }
-}
-
-// Obtener la información de los canales (incluyendo el logo)
-export async function fetchYouTubeChannels() {
-  try {
-    const response = await axios.get(`https://www.googleapis.com/youtube/v3/channels`, {
-      params: {
-        key: API_KEY,
-        id: CHANNELS.join(","),
-        part: "snippet"
-      }
-    });
-
-    const channels = response.data.items.map((channel) => ({
-      id: channel.id,
-      name: channel.snippet.title,
-      logo: channel.snippet.thumbnails.default.url
-    }));
-
-    return channels;
-  } catch (error) {
-    console.error("Error al obtener información de los canales:", error);
     throw error;
   }
 }
