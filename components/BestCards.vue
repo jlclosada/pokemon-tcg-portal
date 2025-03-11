@@ -4,7 +4,7 @@
 
     <!-- Mensaje de carga -->
     <div v-if="loading" class="flex justify-center items-center h-48">
-      <span class="text-gray-600 dark:text-gray-300 text-lg animate-pulse">Cargando cartas...</span>
+      <LoadingSpinner />
     </div>
 
     <!-- Mensaje de error -->

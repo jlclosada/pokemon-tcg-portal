@@ -27,7 +27,7 @@
 
     <!-- Modal -->
     <UModal v-model="isModalOpen" :overlay="true" @click-outside="closeModal">
-      <div class="bg-white dark:bg-gray-900 p-8 rounded-3xl max-w-7xl mx-auto relative overflow-hidden shadow-2xl w-full">
+      <div class="bg-white dark:bg-gray-900 p-8 rounded-2xl mx-auto relative overflow-hidden shadow-2xl">
         <button @click="closeModal"
           class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-transform transform hover:rotate-90">
           ❌
