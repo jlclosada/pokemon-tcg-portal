@@ -31,4 +31,5 @@ export default {
   dark: "Dark",
   fairy: "Fairy",
   normal: "Normal",
+  media: "Media",
 };

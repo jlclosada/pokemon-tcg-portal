@@ -38,4 +38,5 @@ export default {
   steel: "Acero",
   normal: "Normal",
   card_explorer: "Cartas",
+  media: "Multimedia",
 };
