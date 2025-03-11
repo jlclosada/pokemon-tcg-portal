@@ -52,7 +52,9 @@
 
 <script setup>
 import { ref, onMounted, computed, defineEmits } from "vue";
-import { fetchYouTubeVideos } from "@/utils/youtubeApi";
+import { useNuxtApp } from "#app";
+
+const { $youtube } = useNuxtApp(); // 🔥 Obtener la función desde el plugin
 
 const videos = ref([]);
 const loading = ref(true);
@@ -62,7 +64,7 @@ const emit = defineEmits(["update-channels"]);
 
 onMounted(async () => {
   try {
-    videos.value = await fetchYouTubeVideos();
+    videos.value = await $youtube.fetchVideos(); // 👈 Usamos la función del plugin
 
     // Si la API no devolvió videos, mostramos el mensaje de cuota agotada
     if (!videos.value.length) {

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_KEY = "AIzaSyCt8V99wWaJFWCrU36EiqMof6cGhtPbqdI"; // Reemplázala con tu clave real
+const API_KEY = useRuntimeConfig().public.youtubeApiKey;
 const CHANNELS = [
   "UCRSvtnW26zUos-X1uWfc7ZQ", // Canal de itsMrJoss
   "UClBxL8-JaQOWoiAgsbT2DKA", // Canal de Pasalapasa
