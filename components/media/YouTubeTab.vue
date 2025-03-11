@@ -33,7 +33,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { fetchYouTubeVideos } from "@/utils/youtubeApi";
+import { fetchYouTubeVideos } from "@/utils/ytApi";
 
 const videos = ref([]);
 const loading = ref(true);

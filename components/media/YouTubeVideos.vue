@@ -52,7 +52,7 @@
 
 <script setup>
 import { ref, onMounted, computed, defineEmits } from "vue";
-import { fetchYouTubeVideos } from "@/utils/youtubeApi";
+import { fetchYouTubeVideos } from "@/utils/ytApi";
 import { useRuntimeConfig } from "#imports"; // 🔥 Se usa solo dentro del setup
 
 const config = useRuntimeConfig();
