@@ -4,7 +4,7 @@
     @update:modelValue="emit('update:isOpen', $event)"
     class="transition-all duration-500 ease-in-out"
   >
-    <div class="p-4 flex-1 bg-gray-800 dark:bg-gray-900 relative rounded-2xl shadow-2xl transform-gpu scale-100 transition-all duration-300 flex flex-col justify-between">
+    <div class="p-4 flex-1 bg-gray-800 dark:bg-gray-900 relative rounded-2xl shadow-2xl transform-gpu scale-100 transition-all duration-300 flex flex-col items-center max-h-[90vh] sm:max-h-screen overflow-y-auto">
 
       <!-- Botón de cierre -->
       <UButton
@@ -12,129 +12,133 @@
         variant="ghost"
         size="sm"
         icon="i-heroicons-x-mark-20-solid"
-        class="absolute top-5 end-5 z-10 transition-transform transform hover:scale-125 focus:outline-none"
+        class="absolute top-4 right-4 z-10 hover:scale-110 transition-transform"
         square
         padded
         @click="close"
       />
 
       <!-- Contenido principal -->
-      <div v-if="card" class="flex flex-col items-center justify-between h-full w-full px-2">
+      <div v-if="card" class="flex flex-col items-center justify-center w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl px-4 space-y-4">
 
         <!-- Título -->
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-center text-gradient bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-600 mb-2">
+        <!-- Título Mejorado -->
+        <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-center relative px-4 py-1 rounded-lg bg-transparent text-white shadow-lg">
           {{ card.name }}
-          <span class="text-lg text-gray-300 dark:text-gray-500">#{{ card.number }}</span>
+          <span class="text-sm sm:text-lg font-semibold text-gray-100 ml-2 bg-gray-700 px-2 py-1 rounded-md shadow-md">
+            #{{ card.number }}
+          </span>
         </h2>
 
-        <!-- Contenedor con efecto latente -->
-        <div class="relative flex items-center justify-center">
-          <div class="glow absolute w-48 h-64 md:w-60 md:h-80 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 opacity-60 blur-2xl" />
+
+        <!-- Contenedor de imagen mejorado -->
+        <div class="relative flex items-center justify-center w-full">
+          <div class="glow absolute w-56 h-80 sm:w-64 sm:h-96 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 opacity-50 blur-2xl" />
 
           <img
             :src="card.images.large"
             :alt="card.name"
-            class="relative w-40 sm:w-52 md:w-64 lg:w-72 mx-auto rounded-lg shadow-lg hover:scale-105 transform transition-all duration-500"
+            class="relative w-48 sm:w-56 md:w-64 lg:w-72 max-h-[50vh] sm:max-h-[75vh] object-contain rounded-lg shadow-lg transition-transform duration-500 hover:scale-105"
           />
         </div>
 
         <!-- Información -->
-        <PokemonInfo :card="card" class="w-full" />
+        <PokemonInfo :card="card" class="w-full max-w-md sm:max-w-lg" />
       </div>
 
     </div>
   </USlideover>
 </template>
+
 <script setup lang="ts">
-import { defineEmits, defineProps } from 'vue';
+import { defineEmits, defineProps, ref } from 'vue';
 import PokemonInfo from './PokemonInfo.vue';
 
 defineProps<{ card: any | null; isOpen: boolean; }>();
 const emit = defineEmits(['update:isOpen']);
 
-// Cierra el slide-over y notifica al padre
+const isFavorite = ref(false);
+
 const close = () => {
   emit('update:isOpen', false);
+};
+
+const toggleFavorite = () => {
+  isFavorite.value = !isFavorite.value;
+  alert(isFavorite.value ? "Añadido a Favoritos" : "Eliminado de Favoritos");
+};
+
+const openCardMarket = () => {
+  const url = props.card.cardmarket?.url || props.card.tcgplayer?.url;
+  if (url) window.open(url, "_blank");
+};
+
+const viewCardDetails = () => {
+  alert(`Mostrando detalles de ${props.card.name}`);
 };
 </script>
 
 <style scoped>
-/* Efecto de neón sutil para el título */
+/* Gradiente en el texto del título */
 .text-gradient {
   background-image: linear-gradient(to right, #6a11cb, #2575fc);
   -webkit-background-clip: text;
   color: transparent;
 }
 
-/* Efecto de neón para el nombre de la carta */
+/* Efecto de neón en el título */
 h2 {
-  color: #ffffff;
-  text-shadow: 0 0 1px rgba(255, 255, 255, 0.6), 0 0 2px rgba(255, 255, 255, 0.6), 0 0 4px rgba(255, 255, 255, 0.6);
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.5), 0 0 6px rgba(255, 255, 255, 0.4);
 }
 
-/* Efecto del número de la colección */
+/* Tamaño dinámico del número de la carta */
 span {
-  color: #bbb;
-  font-size: 1rem;
-  margin-left: 8px;
   transition: color 0.3s ease;
 }
 
-.dark span {
-  color: #f3eeee;
-}
-
-/* Agregar sombras dinámicas y transiciones */
-img {
-  transition: transform 0.5s ease;
-}
-
-img:hover {
-  transform: scale(1.05) rotate(3deg);
-}
-
-/* Estilo para el botón de cierre */
-button {
-  transition: transform 0.2s ease, color 0.3s ease;
-}
-
-button:hover {
-  transform: scale(1.25);
-  color: #ff4081;
-}
-
-/* Agregar transiciones en el slide-over */
-.U_Slideover {
-  transition: transform 0.5s ease-in-out, opacity 0.3s ease;
-}
-
-.U_Slideover-enter-active, .U_Slideover-leave-active {
-  transform: translateX(0);
-  opacity: 1;
-}
-
-.U_Slideover-enter, .U_Slideover-leave-to {
-  transform: translateX(100%);
-  opacity: 0;
-}
-
-/* Efecto latente de luz */
+/* Efecto de imagen flotante */
 @keyframes floatingGlow {
-  0% {
-    transform: translateY(-5px) scale(1);
-    opacity: 0.7;
+  0%, 100% {
+    transform: translateY(-3px);
+    opacity: 0.6;
   }
   50% {
-    transform: translateY(5px) scale(1.05);
-    opacity: 0.9;
-  }
-  100% {
-    transform: translateY(-5px) scale(1);
-    opacity: 0.7;
+    transform: translateY(3px);
+    opacity: 0.8;
   }
 }
 
 .glow {
   animation: floatingGlow 4s infinite ease-in-out;
+}
+
+/* Transición del botón de cierre */
+button {
+  transition: transform 0.2s ease, color 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.15);
+  color: #ff4081;
+}
+
+/* Botón estilo Pokémon */
+.pokemon-btn {
+  font-family: 'Press Start 2P', cursive;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 10px;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.pokemon-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
 }
 </style>
