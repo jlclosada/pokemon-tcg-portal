@@ -46,6 +46,7 @@
 
     <!-- Estado de Carga -->
     <div v-if="loading" class="text-center mt-6">
+      <LoadingSpinner />
       <p class="text-gray-300 animate-pulse">Cargando Pokémon...</p>
     </div>
   </div>

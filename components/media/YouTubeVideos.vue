@@ -6,7 +6,7 @@
 
     <!-- Mensajes de estado -->
     <div v-if="loading" class="text-center text-gray-500 animate-pulse">
-      Cargando videos...
+      <LoadingSpinner />
     </div>
     <div v-if="error" class="text-center text-red-500">
       Error al cargar videos. Inténtalo más tarde.
