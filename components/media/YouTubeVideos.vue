@@ -19,29 +19,30 @@
 
     <!-- Listado de videos -->
     <div v-if="videos.length && !quotaExceeded">
-      <div v-for="(channelVideos, channel) in groupedVideos" :key="channel" class="mb-16">
-        <h3 class="text-2xl font-semibold text-gray-200 mb-6 border-b border-gray-700 pb-2">
-          {{ channel }}
-        </h3>
+      <div v-for="(channelVideos, channel) in groupedVideos" :key="channel" :id="`channel-${channel.replace(/\s+/g, '-')}`" class="mb-16">
+  <h3 class="text-2xl font-semibold text-gray-200 mb-6 border-b border-gray-700 pb-2">
+    {{ channel }}
+  </h3>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div v-for="video in channelVideos" :key="video.id" class="bg-gray-900 rounded-xl shadow-lg overflow-hidden hover:scale-105 transition-transform">
-            <iframe
-              :src="`https://www.youtube.com/embed/${video.id}`"
-              frameborder="0"
-              allowfullscreen
-              class="w-full h-52 rounded-t-xl">
-            </iframe>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div v-for="video in channelVideos" :key="video.id" class="bg-gray-900 rounded-xl shadow-lg overflow-hidden hover:scale-105 transition-transform">
+      <iframe
+        :src="`https://www.youtube.com/embed/${video.id}`"
+        frameborder="0"
+        allowfullscreen
+        class="w-full h-52 rounded-t-xl">
+      </iframe>
 
-            <div class="p-4 space-y-3">
-              <h3 class="text-lg font-bold text-gray-200">{{ video.title }}</h3>
-              <a :href="video.channelUrl" target="_blank" class="dark:text-gray-300 hover:underline text-sm flex items-center space-x-2">
-                <span>📺 {{ video.channel }}</span>
-              </a>
-            </div>
-          </div>
-        </div>
+      <div class="p-4 space-y-3">
+        <h3 class="text-lg font-bold text-gray-200">{{ video.title }}</h3>
+        <a :href="video.channelUrl" target="_blank" class="dark:text-gray-300 hover:underline text-sm flex items-center space-x-2">
+          <span> {{ video.channel }}</span>
+        </a>
       </div>
+    </div>
+  </div>
+</div>
+
     </div>
 
     <!-- Si no hay videos y no es error de cuota -->
@@ -70,14 +71,17 @@ const updateChannelList = () => {
   const uniqueChannels = Array.from(
     new Set(videos.value.map((video) => video.channel))
   ).map((channel) => {
+    const firstVideo = videos.value.find((video) => video.channel === channel);
     return {
       name: channel,
-      url: videos.value.find((video) => video.channel === channel)?.channelUrl || "#",
+      url: firstVideo?.channelUrl || "#",
+      logo: firstVideo?.channelLogo || "", // ✅ Ahora incluimos el logo
     };
   });
 
   emit("update-channels", uniqueChannels);
 };
+
 
 // Llamada a la API al montar el componente
 onMounted(async () => {

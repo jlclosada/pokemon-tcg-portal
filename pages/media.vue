@@ -10,7 +10,7 @@
       <div class="flex flex-wrap gap-4 justify-center">
         <a
           v-for="channel in channels"
-          :key="channel.id"
+          :key="channel.name"
           @click.prevent="scrollToChannel(channel.name)"
           class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md shadow-md transition cursor-pointer">
           <img :src="channel.logo" alt="Logo" class="w-6 h-6 rounded-full inline-block mr-2">
