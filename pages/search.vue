@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-gray-900">
     <!-- Header -->
-    <div class="max-w-5xl mx-auto px-4 pt-10 pb-6">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 pt-10 pb-6">
       <!-- Buscador -->
       <div class="search-bar">
         <svg class="search-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -20,7 +20,7 @@
       </div>
 
       <!-- Info -->
-      <p v-if="totalCount > 0" class="text-center text-sm text-gray-500 mt-4">
+      <p v-if="totalCount > 0" class="text-center text-xs sm:text-sm text-gray-500 mt-4">
         {{ totalCount }} resultado{{ totalCount !== 1 ? 's' : '' }} para "<span class="text-yellow-400 font-semibold">{{ lastQuery }}</span>"
       </p>
     </div>
@@ -74,16 +74,16 @@
     </div>
 
     <!-- Sin resultados -->
-    <div v-else-if="hasSearched && !loading" class="flex flex-col items-center py-24 px-4">
-      <p class="text-xl text-gray-500">No se encontraron cartas para "<span class="text-white font-semibold">{{ lastQuery }}</span>"</p>
-      <p class="text-sm text-gray-600 mt-2">Prueba con otro nombre o término</p>
+    <div v-else-if="hasSearched && !loading" class="flex flex-col items-center py-16 sm:py-24 px-6 text-center">
+      <p class="text-base sm:text-xl text-gray-500">No se encontraron cartas para "<span class="text-white font-semibold">{{ lastQuery }}</span>"</p>
+      <p class="text-xs sm:text-sm text-gray-600 mt-2">Prueba con otro nombre o término</p>
     </div>
 
     <!-- Estado inicial -->
-    <div v-else-if="!hasSearched" class="flex flex-col items-center py-24 px-4 text-center">
-      <img src="/images/pokeball.png" alt="" class="w-16 h-16 opacity-20 mb-4" />
-      <p class="text-lg text-gray-500">Escribe el nombre de una carta para buscar</p>
-      <p class="text-sm text-gray-600 mt-1">Ej: Charizard, Pikachu, Mewtwo, Lugia...</p>
+    <div v-else-if="!hasSearched" class="flex flex-col items-center py-16 sm:py-24 px-6 text-center">
+      <img src="/images/pokeball.png" alt="" class="w-12 h-12 sm:w-16 sm:h-16 opacity-20 mb-4" />
+      <p class="text-base sm:text-lg text-gray-500">Escribe el nombre de una carta para buscar</p>
+      <p class="text-xs sm:text-sm text-gray-600 mt-1">Ej: Charizard, Pikachu, Mewtwo, Lugia...</p>
     </div>
   </div>
 </template>
@@ -198,28 +198,34 @@ onMounted(() => {
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
   max-width: 560px;
   margin: 0 auto;
 }
 .search-icon {
   position: absolute;
-  left: 16px;
-  width: 20px;
-  height: 20px;
+  left: 12px;
+  width: 18px;
+  height: 18px;
   color: rgba(255, 255, 255, 0.3);
   pointer-events: none;
 }
 .search-input {
   width: 100%;
-  padding: 14px 48px 14px 48px;
+  box-sizing: border-box;
+  padding: 12px 44px 12px 40px;
   background: rgba(31, 41, 55, 0.6);
   border: 1px solid rgba(75, 85, 99, 0.4);
   border-radius: 14px;
   color: #fff;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   outline: none;
   transition: all 0.3s ease;
+}
+@media (min-width: 640px) {
+  .search-icon { left: 16px; width: 20px; height: 20px; }
+  .search-input { padding: 14px 48px 14px 48px; font-size: 15px; }
 }
 .search-input:focus {
   border-color: rgba(251, 191, 36, 0.5);
@@ -228,7 +234,7 @@ onMounted(() => {
 .search-input::placeholder { color: rgba(255,255,255,0.3); }
 .search-clear {
   position: absolute;
-  right: 14px;
+  right: 10px;
   width: 24px; height: 24px;
   display: flex; align-items: center; justify-content: center;
   border-radius: 50%;
@@ -241,7 +247,7 @@ onMounted(() => {
 }
 .search-clear:hover { background: rgba(251,191,36,0.3); color: #fff; }
 .search-spinner {
-  position: absolute; right: 16px;
+  position: absolute; right: 12px;
   width: 20px; height: 20px;
   border: 2px solid rgba(251,191,36,0.3);
   border-top-color: #fbbf24;
@@ -254,13 +260,16 @@ onMounted(() => {
 .result-card {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 12px;
+  gap: 10px;
+  padding: 10px;
   background: rgba(31, 41, 55, 0.4);
   border: 1px solid rgba(75, 85, 99, 0.2);
-  border-radius: 16px;
+  border-radius: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
+}
+@media (min-width: 640px) {
+  .result-card { gap: 14px; padding: 12px; border-radius: 16px; }
 }
 .result-card:hover {
   background: rgba(31, 41, 55, 0.7);
@@ -272,10 +281,13 @@ onMounted(() => {
 .result-card-img-wrapper {
   position: relative;
   flex-shrink: 0;
-  width: 64px;
-  height: 90px;
-  border-radius: 8px;
+  width: 50px;
+  height: 70px;
+  border-radius: 6px;
   overflow: hidden;
+}
+@media (min-width: 640px) {
+  .result-card-img-wrapper { width: 64px; height: 90px; border-radius: 8px; }
 }
 .result-card-img {
   width: 100%;
@@ -310,7 +322,7 @@ onMounted(() => {
   gap: 4px;
 }
 .result-card-name {
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 700;
   color: #fff;
   white-space: nowrap;
@@ -318,39 +330,50 @@ onMounted(() => {
   text-overflow: ellipsis;
   transition: color 0.3s;
 }
+@media (min-width: 640px) {
+  .result-card-name { font-size: 15px; }
+}
 .result-card:hover .result-card-name { color: #fbbf24; }
 
 .result-card-meta {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 .result-card-set {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
   color: rgba(251, 191, 36, 0.7);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+@media (min-width: 640px) {
+  .result-card-meta { gap: 8px; }
+  .result-card-set { font-size: 12px; }
+}
 .result-card-number {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   color: rgba(255,255,255,0.25);
+  flex-shrink: 0;
 }
 
 .result-card-tags {
   display: flex;
-  gap: 5px;
+  gap: 4px;
   flex-wrap: wrap;
 }
 .tag {
-  font-size: 9px;
+  font-size: 8px;
   font-weight: 600;
-  padding: 2px 6px;
-  border-radius: 6px;
+  padding: 1px 5px;
+  border-radius: 5px;
   text-transform: uppercase;
   letter-spacing: 0.03em;
+}
+@media (min-width: 640px) {
+  .tag { font-size: 9px; padding: 2px 6px; border-radius: 6px; }
 }
 .tag-rarity {
   color: #fbbf24;
@@ -373,6 +396,10 @@ onMounted(() => {
   color: rgba(255,255,255,0.1);
   flex-shrink: 0;
   transition: all 0.3s;
+  display: none;
+}
+@media (min-width: 640px) {
+  .result-card-arrow { display: block; }
 }
 .result-card:hover .result-card-arrow {
   color: #fbbf24;
