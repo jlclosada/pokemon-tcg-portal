@@ -28,6 +28,11 @@
               <span>🃏 Ver Cartas</span>
             </ULink>
           </div>
+
+          <!-- Buscador global de cartas -->
+          <div class="mt-12 w-full max-w-2xl mx-auto px-4">
+            <GlobalCardSearch />
+          </div>
         </div>
 
         <!-- Scroll indicator -->
@@ -79,6 +84,7 @@
 <script setup lang="ts">
 import CategoryCard from "~/components/CategoryCard.vue";
 import NewsCard from "~/components/NewsCard.vue";
+import GlobalCardSearch from "~/components/GlobalCardSearch.vue";
 import { newsData } from "~/data/newsData";
 
 const categories = [

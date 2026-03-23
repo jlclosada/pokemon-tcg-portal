@@ -1,5 +1,5 @@
 <template>
-  <footer class="w-full bg-gray-950 border-t border-gray-800/60">
+  <footer class="w-full border-t border-white/5 bg-gray-950/80 backdrop-blur-md">
     <div class="max-w-7xl mx-auto px-6 py-14">
       <!-- Grid principal -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
@@ -9,56 +9,59 @@
           <NuxtLink to="/" class="flex items-center gap-2.5 group">
             <img src="/images/pokeball.png" alt="Pokéball"
               class="w-9 h-9 transition-transform duration-500 group-hover:rotate-[360deg]" />
-            <span class="text-white font-extrabold text-xl tracking-tight">TCG Portal</span>
+            <span class="text-white/90 font-extrabold text-xl tracking-tight">TCG Portal</span>
           </NuxtLink>
-          <span class="text-xs text-yellow-400/60 italic mt-1">Gotta catch 'em all! ⚡</span>
+          <p class="text-sm text-white/30 leading-relaxed">
+            Tu plataforma para explorar la Pokédex, coleccionar cartas del TCG y descubrir contenido del mundo Pokémon.
+          </p>
+          <span class="text-xs text-yellow-400/40 italic">Gotta catch 'em all! ⚡</span>
         </div>
 
         <!-- Columna 2: Navegación -->
         <div>
-          <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-4">Explorar</h4>
+          <h4 class="text-white/60 font-bold text-xs uppercase tracking-wider mb-4">Explorar</h4>
           <ul class="space-y-2.5">
-            <li><NuxtLink to="/" class="footer-link">🏠 Inicio</NuxtLink></li>
-            <li><NuxtLink to="/pokedex" class="footer-link">📖 Pokédex</NuxtLink></li>
-            <li><NuxtLink to="/cards" class="footer-link">🃏 Cartas TCG</NuxtLink></li>
-            <li><NuxtLink to="/media" class="footer-link">🎬 Multimedia</NuxtLink></li>
-            <li><NuxtLink to="/about" class="footer-link">ℹ️ Sobre nosotros</NuxtLink></li>
+            <li><NuxtLink to="/" class="footer-link">Inicio</NuxtLink></li>
+            <li><NuxtLink to="/pokedex" class="footer-link">Pokédex</NuxtLink></li>
+            <li><NuxtLink to="/cards" class="footer-link">Cartas TCG</NuxtLink></li>
+            <li><NuxtLink to="/media" class="footer-link">Multimedia</NuxtLink></li>
+            <li><NuxtLink to="/about" class="footer-link">Sobre nosotros</NuxtLink></li>
           </ul>
         </div>
 
         <!-- Columna 3: Recursos -->
         <div>
-          <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-4">Recursos</h4>
+          <h4 class="text-white/60 font-bold text-xs uppercase tracking-wider mb-4">Recursos</h4>
           <ul class="space-y-2.5">
-            <li><a href="https://pokemontcg.io/" target="_blank" rel="noopener" class="footer-link">📡 Pokémon TCG API</a></li>
-            <li><a href="https://pokeapi.co/" target="_blank" rel="noopener" class="footer-link">🔗 PokéAPI</a></li>
-            <li><a href="https://www.pokemon.com/es" target="_blank" rel="noopener" class="footer-link">🌐 Pokémon.com</a></li>
-            <li><NuxtLink to="/maintenance" class="footer-link">📜 Política de privacidad</NuxtLink></li>
-            <li><NuxtLink to="/maintenance" class="footer-link">📄 Términos de servicio</NuxtLink></li>
+            <li><a href="https://pokemontcg.io/" target="_blank" rel="noopener" class="footer-link">Pokémon TCG API</a></li>
+            <li><a href="https://pokeapi.co/" target="_blank" rel="noopener" class="footer-link">PokéAPI</a></li>
+            <li><a href="https://www.pokemon.com/es" target="_blank" rel="noopener" class="footer-link">Pokémon.com</a></li>
+            <li><NuxtLink to="/maintenance" class="footer-link">Política de privacidad</NuxtLink></li>
+            <li><NuxtLink to="/maintenance" class="footer-link">Términos de servicio</NuxtLink></li>
           </ul>
         </div>
 
         <!-- Columna 4: Redes -->
         <div>
-          <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-4">Comunidad</h4>
-          <p class="text-sm text-gray-400 mb-4">Síguenos para estar al día de las novedades.</p>
+          <h4 class="text-white/60 font-bold text-xs uppercase tracking-wider mb-4">Comunidad</h4>
+          <p class="text-sm text-white/25 mb-4">Síguenos para estar al día.</p>
           <div class="flex gap-3">
             <a v-for="social in socialLinks" :key="social.label"
               :href="social.href" target="_blank" rel="noopener noreferrer" :title="social.label"
-              class="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-800/80 border border-gray-700/40 hover:border-yellow-400/50 hover:bg-yellow-400/10 transition-all duration-300 group">
-              <svg class="w-5 h-5 text-gray-400 group-hover:text-yellow-400 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" v-html="social.svg" />
+              class="w-10 h-10 flex items-center justify-center rounded-xl border border-white/10 hover:border-yellow-400/40 hover:bg-yellow-400/5 transition-all duration-300 group">
+              <svg class="w-5 h-5 text-white/30 group-hover:text-yellow-400 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" v-html="social.svg" />
             </a>
           </div>
         </div>
       </div>
 
-      <!-- Separador + Copyright -->
-      <div class="mt-12 pt-8 border-t border-gray-800/40 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <p class="text-xs text-gray-500">
+      <!-- Copyright -->
+      <div class="mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <p class="text-xs text-white/20">
           © {{ new Date().getFullYear() }} José Luis Cáceres Losada · Todos los derechos reservados
         </p>
-        <p class="text-xs text-gray-600">
-          No afiliado a The Pokémon Company International · Datos de <a href="https://pokemontcg.io/" target="_blank" class="text-yellow-500/70 hover:text-yellow-400 transition-colors">pokemontcg.io</a>
+        <p class="text-xs text-white/15">
+          No afiliado a The Pokémon Company International · <a href="https://pokemontcg.io/" target="_blank" class="text-yellow-400/30 hover:text-yellow-400/60 transition-colors">pokemontcg.io</a>
         </p>
       </div>
     </div>
@@ -76,6 +79,6 @@ const socialLinks = [
 
 <style scoped>
 .footer-link {
-  @apply text-sm text-gray-400 hover:text-yellow-400 transition-colors duration-200 flex items-center gap-1.5;
+  @apply text-sm text-white/25 hover:text-yellow-400/80 transition-colors duration-200;
 }
 </style>
