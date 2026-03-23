@@ -22,7 +22,7 @@
             @click="goToPage(item.link)"
           >
             <!-- Si la colección tiene un logo, se muestra -->
-            <img v-if="item.logo" :src="item.logo" :alt="item.label" class="w-6 h-6 object-contain" />
+              <img v-if="(item as any).logo" :src="(item as any).logo" :alt="item.label" class="w-6 h-6 object-contain" />
             <!-- Si no tiene logo, se muestra un ícono por defecto -->
             <Icon v-else :name="item.icon" class="w-5 h-5 text-gray-500 dark:text-gray-300" />
             <span class="text-sm font-medium">{{ item.label }}</span>
@@ -44,11 +44,11 @@ const openSections = reactive<{ [key: string]: boolean }>({
   settings: false,
 });
 
-const collections = ref([]); // Lista de colecciones obtenida de la API
+const collections = ref<any[]>([]);
 const loading = ref(true);
-const error = ref(null);
+const error = ref<string | null>(null);
 
-const menuSections = reactive([
+const menuSections: any[] = reactive([
   {
     id: "collections",
     label: "Colecciones",
@@ -74,7 +74,7 @@ const menuSections = reactive([
 onMounted(async () => {
   const { $apiClient } = useNuxtApp();
   try {
-    const response = await $apiClient("/sets");
+    const response: any = await $apiClient("/sets");
     collections.value = response.data;
 
     // ⚡️ Actualizar el array dentro de `menuSections` reactivamente

@@ -1,5 +1,3 @@
-import axios from "axios";
-
 const CHANNELS = [
   "UCRSvtnW26zUos-X1uWfc7ZQ", // Canal de itsMrJoss
   "UClBxL8-JaQOWoiAgsbT2DKA", // Canal de Pasalapasa
@@ -9,9 +7,8 @@ const CHANNELS = [
 // Función para obtener la información del canal (incluye el logo)
 async function fetchChannelInfo(apiKey, channelId) {
   try {
-    const response = await axios.get(
-      `https://www.googleapis.com/youtube/v3/channels`,
-      {
+    const response = await $fetch(
+      `https://www.googleapis.com/youtube/v3/channels`, {
         params: {
           key: apiKey,
           id: channelId,
@@ -20,10 +17,10 @@ async function fetchChannelInfo(apiKey, channelId) {
       }
     );
 
-    const channel = response.data.items[0];
+    const channel = response.items[0];
     return {
       name: channel.snippet.title,
-      logo: channel.snippet.thumbnails.default.url, // 🔥 Aquí está el logo
+      logo: channel.snippet.thumbnails.default.url,
       url: `https://www.youtube.com/channel/${channelId}`
     };
   } catch (error) {
@@ -34,9 +31,14 @@ async function fetchChannelInfo(apiKey, channelId) {
 
 // Obtener los videos de los canales
 export async function fetchYouTubeVideos(apiKey) {
+  if (!apiKey) {
+    console.warn("No se ha configurado la API Key de YouTube");
+    return [];
+  }
+
   try {
     const videos = [];
-    const channelInfoMap = {}; // 🔥 Para almacenar los datos de los canales y evitar peticiones duplicadas
+    const channelInfoMap = {};
 
     for (const channelId of CHANNELS) {
       // Obtener información del canal si no la hemos obtenido antes
@@ -44,9 +46,8 @@ export async function fetchYouTubeVideos(apiKey) {
         channelInfoMap[channelId] = await fetchChannelInfo(apiKey, channelId);
       }
 
-      const response = await axios.get(
-        `https://www.googleapis.com/youtube/v3/search`,
-        {
+      const response = await $fetch(
+        `https://www.googleapis.com/youtube/v3/search`, {
           params: {
             key: apiKey,
             channelId,
@@ -58,14 +59,14 @@ export async function fetchYouTubeVideos(apiKey) {
         }
       );
 
-      response.data.items.forEach((item) => {
+      response.items.forEach((item) => {
         videos.push({
           id: item.id.videoId,
           title: item.snippet.title,
           channel: item.snippet.channelTitle,
           channelId,
-          channelLogo: channelInfoMap[channelId].logo, // ✅ Incluir el logo del canal
-          channelUrl: channelInfoMap[channelId].url,   // ✅ Incluir la URL del canal
+          channelLogo: channelInfoMap[channelId].logo,
+          channelUrl: channelInfoMap[channelId].url,
           thumbnail: item.snippet.thumbnails.high.url
         });
       });

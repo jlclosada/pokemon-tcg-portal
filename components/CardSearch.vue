@@ -2,7 +2,7 @@
 import { ref, defineEmits, onMounted } from "vue";
 
 // Definir opciones disponibles
-const rarities = ["All", "Common", "Uncommon", "Rare", "Rare Holo", "Ultra Rare", "Secret Rare"];
+const rarities = ["All", "Common", "Uncommon", "Rare", "Rare Holo", "Rare Holo EX", "Ultra Rare", "Secret Rare", "Illustration Rare"];
 
 // Valores reactivos para los filtros
 const nameQuery = ref("");
@@ -33,34 +33,23 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative w-full max-w-4xl mx-auto p-6 rounded-2xl shadow-xl transition-all"
-       :class="{ 'bg-gray-900/80 text-white': $colorMode.value === 'dark', 'bg-gray-100 text-gray-900': $colorMode.value === 'light' }">
-    
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <!-- Campo de búsqueda por nombre -->
-      <div class="relative">
-        <input v-model="nameQuery" placeholder="Buscar carta..."
-               @input="updateFilters"
-               class="w-full p-3 bg-transparent border rounded-lg outline-none focus:ring-2 transition-all"
-               :class="{ 'border-gray-500 focus:ring-blue-500 text-white': $colorMode.value === 'dark', 'border-gray-300 focus:ring-blue-600 text-gray-900': $colorMode.value === 'light' }" />
-      </div>
+  <div class="w-full max-w-4xl mx-auto p-5 rounded-2xl bg-gray-800/50 backdrop-blur-md border border-gray-700/30 shadow-lg mt-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+      <!-- Búsqueda por nombre -->
+      <input v-model="nameQuery" placeholder="🔍 Buscar carta..."
+        @input="updateFilters"
+        class="w-full px-4 py-3 bg-gray-900/60 border border-gray-700/50 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-yellow-400/50 transition-all" />
 
-      <!-- Campo de búsqueda por número -->
-      <div class="relative">
-        <input v-model="cardNumber" placeholder="Número de carta..."
-               @input="updateFilters"
-               class="w-full p-3 bg-transparent border rounded-lg outline-none focus:ring-2 transition-all"
-               :class="{ 'border-gray-500 focus:ring-blue-500 text-white': $colorMode.value === 'dark', 'border-gray-300 focus:ring-blue-600 text-gray-900': $colorMode.value === 'light' }" />
-      </div>
+      <!-- Búsqueda por número -->
+      <input v-model="cardNumber" placeholder="# Número de carta"
+        @input="updateFilters"
+        class="w-full px-4 py-3 bg-gray-900/60 border border-gray-700/50 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-yellow-400/50 transition-all" />
 
       <!-- Selector de rareza -->
-      <div class="relative">
-        <select v-model="rarity" @change="updateFilters"
-                class="w-full p-3 bg-transparent border rounded-lg outline-none focus:ring-2 transition-all"
-                :class="{ 'border-gray-500 focus:ring-blue-500 text-white': $colorMode.value === 'dark', 'border-gray-300 focus:ring-blue-600 text-gray-900': $colorMode.value === 'light' }">
-          <option v-for="r in rarities" :key="r" :value="r">{{ r }}</option>
-        </select>
-      </div>
+      <select v-model="rarity" @change="updateFilters"
+        class="w-full px-4 py-3 bg-gray-900/60 border border-gray-700/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-yellow-400/50 transition-all appearance-none cursor-pointer">
+        <option v-for="r in rarities" :key="r" :value="r" class="bg-gray-900 text-white">{{ r }}</option>
+      </select>
     </div>
   </div>
 </template>

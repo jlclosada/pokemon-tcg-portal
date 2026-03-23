@@ -1,55 +1,39 @@
 <template>
-  <!-- Contenido de la página de mantenimiento -->
-  <div class="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white relative overflow-hidden">
-    <!-- Efecto de fondo dinámico -->
-    <div class="absolute inset-0 bg-gradient-to-r from-purple-700 to-blue-600 opacity-40 blur-2xl animate-pulse"></div>
-    <!-- Contenido principal -->
-    <div class="relative z-10 text-center p-6 max-w-lg">
+  <div class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white relative overflow-hidden">
+    <!-- Efecto de fondo -->
+    <div class="absolute inset-0">
+      <div class="absolute inset-0 bg-gradient-to-r from-purple-700/20 to-blue-600/20 blur-3xl animate-pulse-slow" />
+      <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-yellow-400/5 rounded-full blur-3xl" />
+    </div>
 
-      <!-- Imagen de Tinkaton -->
-      <img src="/images/tinkaton.png" alt="Tinkaton Mantenimiento"
-        class="w-64 mx-auto mb-6 drop-shadow-lg hover:scale-105 transition-transform duration-500" />
+    <!-- Contenido -->
+    <div class="relative z-10 text-center p-6 max-w-lg animate-fade-in-up">
+      <img src="/images/tinkaton.png" alt="En mantenimiento"
+        class="w-56 mx-auto mb-8 drop-shadow-2xl animate-float" />
 
-      <!-- Mensaje de mantenimiento -->
-      <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500 mb-4">
-        ¡Estamos en mantenimiento!
+      <h1 class="text-4xl md:text-5xl font-extrabold text-pokemon-gradient mb-4">
+        ¡En construcción!
       </h1>
-      <p class="text-lg text-gray-300 mb-6">
-        Actualmente estamos trabajando en mejorar la experiencia. 🚀
+      <p class="text-lg text-gray-400 mb-8 leading-relaxed">
+        Estamos trabajando en esta sección para ofrecerte la mejor experiencia. 🚀<br/>
         Vuelve pronto para descubrir nuevas funciones.
       </p>
 
-      <!-- Botón de regreso -->
-      <UButton
-        to="/"
-        color="gray"
-        variant="solid"
-        class="bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700 transform transition-all duration-300 hover:scale-105 shadow-lg"
+      <UButton to="/" size="lg"
+        class="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 font-bold hover:from-yellow-500 hover:to-orange-600 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-[0_4px_20px_rgba(255,203,5,0.4)]"
       >
-        Volver al inicio
+        ← Volver al inicio
       </UButton>
-
     </div>
   </div>
 </template>
 
 <style scoped>
-/* Efecto de animación para el fondo */
-@keyframes neonGlow {
-  0% {
-    opacity: 0.6;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scale(1.05);
-  }
-  100% {
-    opacity: 0.6;
-    transform: scale(1);
-  }
+.animate-pulse-slow {
+  animation: pulse-slow 6s ease-in-out infinite;
 }
-.animate-pulse {
-  animation: neonGlow 4s infinite ease-in-out;
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
 }
 </style>

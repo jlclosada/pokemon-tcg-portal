@@ -1,25 +1,29 @@
 <template>
   <div
-    class="relative bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 transition-transform transform hover:scale-105 cursor-pointer overflow-hidden group"
+    class="relative rounded-2xl overflow-hidden bg-gray-800/50 border border-gray-700/30 hover:border-yellow-400/30 transition-all duration-400 cursor-pointer group hover:scale-[1.05] hover:shadow-[0_0_25px_rgba(255,203,5,0.12)]"
     @click="openModal"
   >
-    <!-- Fondo animado -->
-    <div class="absolute inset-0 opacity-0 group-hover:opacity-15 transition-opacity">
-      <img v-if="pokemon.image" :src="pokemon.image" class="object-cover w-full h-full" alt="background" />
+    <!-- Número del Pokémon -->
+    <span class="absolute top-2 right-2 z-10 text-xs font-bold text-gray-500 dark:text-gray-500 bg-gray-200/80 dark:bg-gray-900/80 px-2 py-0.5 rounded-full">
+      #{{ pokemon.id }}
+    </span>
+
+    <!-- Imagen -->
+    <div class="flex justify-center pt-6 pb-2 px-4">
+      <img v-if="pokemon.image" :src="pokemon.image" :alt="pokemon.name" loading="lazy"
+        class="w-24 h-24 md:w-28 md:h-28 object-contain drop-shadow-lg transition-transform duration-500 group-hover:scale-115 group-hover:-translate-y-1" />
     </div>
 
-    <!-- Imagen y nombre -->
-    <div class="relative z-10 flex flex-col items-center">
-      <img v-if="pokemon.image" :src="pokemon.image" :alt="pokemon.name"
-        class="w-28 h-28 md:w-36 md:h-36 transition-transform transform group-hover:scale-110" />
-      <h3 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-200 text-center capitalize mt-3">
+    <!-- Info -->
+    <div class="relative z-10 flex flex-col items-center pb-4 px-3">
+      <h3 class="text-sm md:text-base font-bold text-white text-center capitalize group-hover:text-yellow-400 transition-colors">
         {{ pokemon.name }}
       </h3>
 
       <!-- Tipos -->
-      <div v-if="pokemon.types?.length" class="flex justify-center space-x-2 mt-2">
+      <div v-if="pokemon.types?.length" class="flex justify-center gap-1.5 mt-2">
         <span v-for="type in pokemon.types" :key="type" :class="getTypeColor(type)"
-          class="px-3 py-1 text-sm font-semibold rounded-lg shadow-md">
+          class="px-2 py-0.5 text-xs font-semibold rounded-full shadow-sm">
           {{ type }}
         </span>
       </div>
@@ -27,10 +31,10 @@
 
     <!-- Modal -->
     <UModal v-model="isModalOpen" :overlay="true" @click-outside="closeModal">
-      <div class="bg-white dark:bg-gray-900 p-8 rounded-2xl mx-auto relative overflow-hidden shadow-2xl">
+      <div class="bg-gray-900 p-6 md:p-8 rounded-2xl mx-auto relative overflow-hidden shadow-2xl max-h-[85vh] overflow-y-auto">
         <button @click="closeModal"
-          class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-transform transform hover:rotate-90">
-          ❌
+          class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700 transition-all z-20">
+          ✕
         </button>
 
         <div v-if="pokemonDetails">
@@ -104,8 +108,8 @@
           </div>
         </div>
 
-        <div v-else class="text-center p-6">
-          <p class="text-gray-500">Cargando información...</p>
+        <div v-else class="text-center p-8">
+          <LoadingSpinner />
         </div>
       </div>
     </UModal>
@@ -113,7 +117,6 @@
 </template>
 
 <script setup>
-import axios from 'axios';
 import { ref } from 'vue';
 import { useI18n } from "#imports";
 
@@ -143,8 +146,7 @@ const closeModal = () => {
 
 const fetchPokemonDetails = async () => {
   try {
-    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${props.pokemon.id}`);
-    pokemonDetails.value = response.data;
+    pokemonDetails.value = await $fetch(`https://pokeapi.co/api/v2/pokemon/${props.pokemon.id}`);
   } catch (error) {
     console.error('Error al cargar los detalles del Pokémon:', error);
     pokemonDetails.value = null;
@@ -157,26 +159,6 @@ const getStatColor = (stat) => {
   return 'bg-red-500 dark:bg-red-400'; // Rojo
 };
 
-const typeTranslations = {
-  fire: t("fire"),
-  water: t("water"),
-  grass: t("grass"),
-  electric: t("electric"),
-  ice: t("ice"),
-  fighting: t("fighting"),
-  poison: t("poison"),
-  ground: t("ground"),
-  flying: t("flying"),
-  psychic: t("psychic"),
-  bug: t("bug"),
-  rock: t("rock"),
-  ghost: t("ghost"),
-  dragon: t("dragon"),
-  dark: t("dark"),
-  steel: t("steel"),
-  fairy: t("fairy"),
-  normal: t("normal"),
-};
 
 const getTypeColor = (type) => {
   const colors = {

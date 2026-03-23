@@ -1,5 +1,157 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
+
+/* ===== Variables de tema Pokémon ===== */
+:root {
+  --pokemon-red: #e3350d;
+  --pokemon-blue: #3b4cca;
+  --pokemon-yellow: #ffcb05;
+  --pokemon-gold: #b3a125;
+  --card-glow: rgba(255, 203, 5, 0.3);
+  --card-hover-glow: rgba(255, 203, 5, 0.6);
+}
 
 body {
   font-family: "Poppins", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scroll suave global */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Eliminar scroll horizontal */
+body {
+  overflow-x: hidden;
+}
+
+/* ===== Scrollbar personalizada ===== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--pokemon-red), var(--pokemon-blue));
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #ff4d2e, #5060e6);
+}
+
+/* ===== Animaciones globales reutilizables ===== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes cardHolo {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 5px var(--card-glow); }
+  50% { box-shadow: 0 0 20px var(--card-hover-glow), 0 0 40px rgba(255, 203, 5, 0.15); }
+}
+
+.animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
+.animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
+.animate-slide-in-left { animation: slideInLeft 0.5s ease-out forwards; }
+.animate-float { animation: float 3s ease-in-out infinite; }
+
+/* ===== Efecto holográfico para cartas ===== */
+.card-holo {
+  position: relative;
+  overflow: hidden;
+}
+.card-holo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.1) 30%,
+    rgba(255, 255, 255, 0.25) 38%,
+    rgba(255, 255, 255, 0.1) 46%,
+    transparent 56%
+  );
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.card-holo:hover::after {
+  opacity: 1;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* ===== Efecto glow para bordes ===== */
+.glow-border {
+  position: relative;
+}
+.glow-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--pokemon-yellow), var(--pokemon-red), var(--pokemon-blue), var(--pokemon-yellow));
+  background-size: 300% 300%;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.4s ease;
+  animation: cardHolo 4s ease infinite;
+}
+.glow-border:hover::before {
+  opacity: 1;
+}
+
+/* ===== Skeleton loader ===== */
+.skeleton {
+  background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+/* ===== Accesibilidad ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+*:focus-visible {
+  outline: 2px solid var(--pokemon-yellow);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ===== Tipografía Pokémon ===== */
+.text-pokemon-gradient {
+  background: linear-gradient(135deg, var(--pokemon-yellow), #ffa500);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }

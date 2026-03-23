@@ -31,5 +31,6 @@ export default {
   dark: "Dark",
   fairy: "Fairy",
   normal: "Normal",
+  card_explorer: "Cards",
   media: "Media",
 };

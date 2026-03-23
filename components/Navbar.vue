@@ -92,7 +92,7 @@
 
 <script setup lang="ts">
 import { useColorMode } from '@vueuse/core';
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '~/stores/auth.store';
 import { useI18n, useCookie } from '#imports';
@@ -123,7 +123,6 @@ if (langCookie.value) {
 
 watch(locale, (newLocale) => {
   langCookie.value = newLocale;
-  window.location.reload();
 });
 
 const selectedLanguage = computed(() => languages.find(lang => lang.code === locale.value) || languages[0]);
@@ -137,6 +136,23 @@ const changeLanguage = (langCode: string) => {
   langCookie.value = langCode;
   isDropdownOpen.value = false;
 };
+
+// Cerrar dropdown al hacer click fuera
+const closeDropdown = (e: MouseEvent) => {
+  const target = e.target as HTMLElement;
+  if (!target.closest('.relative')) {
+    isDropdownOpen.value = false;
+  }
+};
+
+onMounted(() => {
+  document.addEventListener('click', closeDropdown);
+  authStore.checkAuth();
+});
+
+onUnmounted(() => {
+  document.removeEventListener('click', closeDropdown);
+});
 
 const isActive = (path: string) => route.path === path;
 

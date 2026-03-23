@@ -1,17 +1,21 @@
 export default {
-  legacy: false, // Necesario para usar la Composition API en Vue 3
+  legacy: false,
   locale: 'es',
   fallbackLocale: 'en',
   messages: {
     en: {
       home: "Home",
       pokedex: "Pokedex",
-      about_us: "About Us"
+      about_us: "About Us",
+      card_explorer: "Cards",
+      media: "Media",
     },
     es: {
       home: "Inicio",
       pokedex: "Pokedex",
-      about_us: "Sobre Nosotros"
+      about_us: "Sobre Nosotros",
+      card_explorer: "Cartas",
+      media: "Multimedia",
     }
   }
 };

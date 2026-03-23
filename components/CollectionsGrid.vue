@@ -31,6 +31,7 @@
           <img
             :src="collection.images.logo"
             :alt="collection.name"
+            loading="lazy"
             class="w-full h-full object-contain transform transition-transform duration-300 group-hover:scale-110"
           />
         </div>
@@ -40,7 +41,10 @@
           <p class="text-md font-bold text-gray-900 dark:text-white line-clamp-1">
             {{ collection.name }}
           </p>
-          <span class="text-sm text-yellow-500 dark:text-yellow-400 font-medium opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+          <p v-if="collection.releaseDate" class="text-xs text-gray-500 dark:text-gray-400">
+            {{ formatDate(collection.releaseDate) }}
+          </p>
+          <span class="text-sm text-yellow-500 dark:text-yellow-400 font-medium opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 block">
             Ver colección →
           </span>
         </div>
@@ -54,15 +58,24 @@ import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
-const collections = ref([]);
+const collections = ref<any[]>([]);
 const loading = ref(true);
-const error = ref(null);
+const error = ref<string | null>(null);
+
+const formatDate = (dateStr: string) => {
+  try {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' });
+  } catch {
+    return dateStr;
+  }
+};
 
 onMounted(async () => {
   const { $apiClient } = useNuxtApp();
   try {
-    const response = await $apiClient("/sets");
-    collections.value = [...response.data].reverse()
+    const response: any = await $apiClient("/sets");
+    collections.value = [...response.data].reverse();
   } catch (err) {
     error.value = "Error cargando las colecciones";
     console.error("Error:", err);
@@ -80,6 +93,7 @@ const goToCollection = (collectionId: string) => {
 .line-clamp-1 {
   display: -webkit-box;
   -webkit-line-clamp: 1;
+  line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

@@ -49,17 +49,22 @@
       <LoadingSpinner />
       <p class="text-gray-300 animate-pulse">Cargando Pokémon...</p>
     </div>
+
+    <!-- Error -->
+    <div v-if="errorMsg" class="text-center mt-6 text-red-400">
+      {{ errorMsg }}
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import axios from 'axios';
 import PokemonCard from '@/components/PokemonCard.vue';
 
 const pokemonList = ref([]);
 const searchQuery = ref('');
 const loading = ref(false);
+const errorMsg = ref('');
 
 const generations = ref([
   { name: "Gen 1", start: 1, end: 151 },
@@ -70,33 +75,67 @@ const generations = ref([
   { name: "Gen 6", start: 650, end: 721 },
   { name: "Gen 7", start: 722, end: 809 },
   { name: "Gen 8", start: 810, end: 905 },
-  { name: "Gen 9", start: 906, end: 1010 }
+  { name: "Gen 9", start: 906, end: 1025 }
 ]);
 
 const selectedGen = ref(generations.value[0]);
 
+// Cache de generaciones ya cargadas para evitar re-fetching
+const cache = new Map();
+
 const fetchPokemonByGeneration = async () => {
+  const cacheKey = `${selectedGen.value.start}-${selectedGen.value.end}`;
+
+  // Si ya tenemos la generación en cache, usarla
+  if (cache.has(cacheKey)) {
+    pokemonList.value = cache.get(cacheKey);
+    return;
+  }
+
   loading.value = true;
+  errorMsg.value = '';
   pokemonList.value = [];
 
   try {
     const { start, end } = selectedGen.value;
-    const requests = [];
+    const limit = end - start + 1;
+    const offset = start - 1;
 
-    for (let i = start; i <= end; i++) {
-      requests.push(axios.get(`https://pokeapi.co/api/v2/pokemon/${i}`));
+    // Una sola petición para obtener la lista de Pokémon
+    const listResponse = await $fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);
+
+    // Obtener detalles en lotes de 20 para no saturar la API
+    const batchSize = 20;
+    const allPokemon = [];
+
+    for (let i = 0; i < listResponse.results.length; i += batchSize) {
+      const batch = listResponse.results.slice(i, i + batchSize);
+      const batchResults = await Promise.all(
+        batch.map(async (p) => {
+          try {
+            const data = await $fetch(p.url);
+            return {
+              id: data.id,
+              name: data.name,
+              image: data.sprites.other['official-artwork'].front_default,
+              types: data.types.map((t) => t.type.name)
+            };
+          } catch {
+            return null;
+          }
+        })
+      );
+      allPokemon.push(...batchResults.filter(Boolean));
+
+      // Actualizar progresivamente la UI
+      pokemonList.value = [...allPokemon];
     }
 
-    const responses = await Promise.all(requests);
-
-    pokemonList.value = responses.map(({ data }) => ({
-      id: data.id,
-      name: data.name,
-      image: data.sprites.other['official-artwork'].front_default,
-      types: data.types.map((t) => t.type.name)
-    }));
+    // Guardar en cache
+    cache.set(cacheKey, allPokemon);
   } catch (error) {
     console.error('Error al cargar los Pokémon:', error);
+    errorMsg.value = 'Error al cargar los Pokémon. Inténtalo de nuevo.';
   } finally {
     loading.value = false;
   }
@@ -104,13 +143,16 @@ const fetchPokemonByGeneration = async () => {
 
 const selectGeneration = (gen) => {
   selectedGen.value = gen;
-  searchQuery.value = ''; // Reinicia la barra de búsqueda
+  searchQuery.value = '';
   fetchPokemonByGeneration();
 };
 
 const filteredPokemon = computed(() => {
+  if (!searchQuery.value) return pokemonList.value;
+  const query = searchQuery.value.toLowerCase();
   return pokemonList.value.filter((pokemon) =>
-    pokemon.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+    pokemon.name.toLowerCase().includes(query) ||
+    String(pokemon.id).includes(query)
   );
 });
 
@@ -120,29 +162,25 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Efecto Glassmorphism en la Pokédex */
 .container {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 24px;
-  box-shadow: 0px 4px 20px rgba(255, 223, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(255, 223, 0, 0.3);
 }
 
-/* Animación suave de botones */
 button {
   transition: all 0.2s ease-in-out;
 }
 
-/* Efecto en hover */
 button:hover {
   transform: scale(1.05);
 }
 
-/* Input de búsqueda con hover */
 input:hover {
   border-color: #FFD700;
-  box-shadow: 0px 0px 10px rgba(255, 215, 0, 0.3);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
   transition: all 0.3s ease-in-out;
 }
 </style>

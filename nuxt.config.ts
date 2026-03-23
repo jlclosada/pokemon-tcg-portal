@@ -2,6 +2,9 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01', // Fecha de compatibilidad
   app: {
     head: {
+      htmlAttrs: {
+        lang: 'es', // Atributo lang para SEO
+      },
       link: [
         {
           rel: 'stylesheet', // Etiqueta link para las hojas de estilos
@@ -21,9 +24,29 @@ export default defineNuxtConfig({
         {
           name: 'viewport', // Etiqueta meta para la compatibilidad con dispositivos móviles
           content: 'width=device-width, initial-scale=1', // Contenido de la etiqueta
-        }
+        },
+        {
+          name: 'description', // Etiqueta meta para la descripción
+          content: 'Explora la Pokédex, colecciona cartas del TCG y descubre todo sobre el mundo Pokémon.', // Contenido de la etiqueta
+        },
+        {
+          name: 'theme-color', // Color del tema para navegadores compatibles
+          content: '#1f2937', // Color oscuro
+        },
+        {
+          property: 'og:title', // Título para compartir en redes sociales
+          content: 'Pokémon TCG Portal', // Contenido del título
+        },
+        {
+          property: 'og:description', // Descripción para compartir en redes sociales
+          content: 'Explora la Pokédex, colecciona cartas del TCG y descubre todo sobre el mundo Pokémon.', // Contenido de la descripción
+        },
+        {
+          property: 'og:type', // Tipo de objeto para Open Graph
+          content: 'website', // Contenido del tipo
+        },
       ],
-      title: 'Pokemon TCG Portal', // Título de la aplicación
+      title: 'Pokémon TCG Portal', // Título de la aplicación
     },
   },
   css: ['~/assets/css/main.css'], // Archivo de estilos personalizado
@@ -50,11 +73,14 @@ export default defineNuxtConfig({
   experimental: {
     renderJsonPayloads: false,
   },
+  nitro: {
+    compressPublicAssets: true, // Comprime los assets públicos con Nitro
+  },
   runtimeConfig: {
     pokemonTcgApiKey: process.env.NUXT_POKEMON_TCG_API_KEY, // API Key de Pokemon TCG
     public: {
       pokemonTcgApiBase: 'https://api.pokemontcg.io/v2', // URL de la API de Pokemon TCG
-      backendBaseUrl: 'http://localhost:8000/api', // URL de la API de Django
+      backendBaseUrl: process.env.NUXT_BACKEND_BASE_URL || 'http://localhost:8000/api', // URL de la API de Django, usa variable de entorno en producción
       youtubeApiKey: process.env.NUXT_YOUTUBE_API_KEY, // API Key de YouTube
     },
   },

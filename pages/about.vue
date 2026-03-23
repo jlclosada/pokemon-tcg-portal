@@ -1,148 +1,129 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue"; // Importar ref y onMounted
+import { ref, onMounted } from "vue";
 
-// Lista de preguntas y respuestas
 const faqs = ref([
-  {
-    question: "¿Cómo puedo empezar a coleccionar cartas aquí?",
-    answer: "Solo necesitas crear una cuenta y empezar a buscar cartas. Puedes añadirlas a tus colecciones y favoritos."
-  },
-  {
-    question: "¿Es gratuito usar la plataforma?",
-    answer: "Sí, nuestra plataforma es completamente gratuita para todos los usuarios."
-  },
-  {
-    question: "¿Cómo puedo contribuir al proyecto?",
-    answer: "Si deseas contribuir, contáctanos a través de nuestras redes sociales o envíanos un correo electrónico."
-  },
-  {
-    question: "¿Tienen una comunidad?",
-    answer: "Sí, puedes unirte a nuestra comunidad en Discord para compartir, discutir estrategias y participar en eventos exclusivos."
-  },
-  {
-    question: "¿Cómo garantizan la autenticidad de las cartas?",
-    answer: "Trabajamos con fuentes verificadas y utilizamos un sistema de autenticación para asegurar que las cartas sean legítimas."
-  }
+  { question: "¿Cómo puedo empezar a coleccionar cartas aquí?", answer: "Solo necesitas crear una cuenta y empezar a buscar cartas. Puedes añadirlas a tus colecciones y favoritos." },
+  { question: "¿Es gratuito usar la plataforma?", answer: "Sí, nuestra plataforma es completamente gratuita para todos los usuarios." },
+  { question: "¿Cómo puedo contribuir al proyecto?", answer: "Si deseas contribuir, contáctanos a través de nuestras redes sociales o envíanos un correo electrónico." },
+  { question: "¿Tienen una comunidad?", answer: "Sí, puedes unirte a nuestra comunidad en Discord para compartir, discutir estrategias y participar en eventos exclusivos." },
+  { question: "¿Cómo garantizan la autenticidad de las cartas?", answer: "Trabajamos con fuentes verificadas y utilizamos un sistema de autenticación para asegurar que las cartas sean legítimas." },
 ]);
 
-// Estado para controlar qué preguntas están abiertas
 const openIndexes = ref<Record<number, boolean>>({});
+const toggleDropdown = (index: number) => { openIndexes.value[index] = !openIndexes.value[index]; };
 
-// Función para alternar la visibilidad de la respuesta
-const toggleDropdown = (index: number) => {
-  openIndexes.value[index] = !openIndexes.value[index];
-};
-
-// Animación de aparición progresiva de secciones
 const fadeIn = ref(false);
+onMounted(() => setTimeout(() => (fadeIn.value = true), 200));
 
-onMounted(() => { // Mostrar las secciones con una animación de fade-in
-  setTimeout(() => { // Retrasar la animación para que se vea correctamente
-    fadeIn.value = true; // Mostrar las secciones
-  }, 300); // Retraso de 300ms
-});
+const features = [
+  { title: "Exploración Avanzada", desc: "Encuentra cualquier carta con filtros y búsqueda avanzada.", emoji: "🔍" },
+  { title: "Gestión de Colección", desc: "Organiza, etiqueta y visualiza tu colección de manera eficiente.", emoji: "📦" },
+  { title: "Intercambio Seguro", desc: "Conéctate con otros coleccionistas y haz intercambios fácilmente.", emoji: "🤝" },
+];
+
+const values = [
+  { text: "Transparencia y confianza", emoji: "✨" },
+  { text: "Pasión por el coleccionismo", emoji: "❤️" },
+  { text: "Comunidad y colaboración", emoji: "🌍" },
+];
+
+const testimonials = [
+  { text: "La mejor plataforma que he usado para organizar mi colección. Súper intuitiva y fácil de usar.", author: "Juan Pérez" },
+  { text: "Por fin un lugar donde puedo intercambiar cartas sin preocupaciones. ¡Increíble trabajo!", author: "María López" },
+];
 </script>
 
 <template>
-  <div
-    class="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden"
-  >
+  <div class="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
     <div
-      class="w-full max-w-5xl px-6 py-16 text-center dark:text-gray-300 transform transition-all duration-1000"
-      :class="{'opacity-0 translate-y-10': !fadeIn, 'opacity-100 translate-y-0': fadeIn}"
+      class="max-w-5xl mx-auto px-6 py-20 text-gray-800 dark:text-gray-300 transition-all duration-1000"
+      :class="{ 'opacity-0 translate-y-10': !fadeIn, 'opacity-100 translate-y-0': fadeIn }"
     >
-      <!-- Título principal -->
-      <h1 class="text-5xl md:text-6xl font-bold mb-4 text-center bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent px-4">
-        Sobre Nosotros
-      </h1>
+      <!-- Header -->
+      <div class="text-center mb-16">
+        <h1 class="text-5xl md:text-6xl font-extrabold text-pokemon-gradient mb-4">Sobre Nosotros</h1>
+        <p class="text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+          Conoce la historia detrás de Pokémon Card Explorer y únete a nuestra comunidad
+        </p>
+      </div>
 
       <!-- Historia -->
-      <section class="mt-12 text-left max-w-3xl mx-auto">
-        <h2 class="text-3xl font-semibold text-yellow-400 mb-4">Nuestra Historia</h2>
+      <section class="mb-16 text-left max-w-3xl mx-auto">
+        <h2 class="text-3xl font-bold text-yellow-500 dark:text-yellow-400 mb-4 flex items-center gap-2">📖 Nuestra Historia</h2>
         <p class="text-lg leading-relaxed">
-          Pokémon Card Explorer nació del amor por el TCG de Pokémon. Empezamos como un pequeño grupo de coleccionistas frustrados por la falta de una plataforma moderna para gestionar nuestras cartas.
-          Decidimos tomar acción y creamos esta comunidad donde cualquier persona puede organizar su colección con facilidad y conectarse con otros fans.
+          Pokémon Card Explorer nació del amor por el TCG de Pokémon. Empezamos como un pequeño grupo de coleccionistas
+          frustrados por la falta de una plataforma moderna para gestionar nuestras cartas.
+          Decidimos tomar acción y creamos esta comunidad donde cualquier persona puede organizar su colección con facilidad
+          y conectarse con otros fans.
         </p>
       </section>
 
-      <!-- Características principales -->
-      <section class="mt-12">
-        <h2 class="text-3xl font-semibold text-yellow-400 mb-4">Características Principales</h2>
-        <div class="grid md:grid-cols-3 gap-6 text-center">
-          <div class="p-6 dark:bg-gray-800 rounded-lg shadow-lg hover:scale-105 transition-transform duration-300">
-            <h3 class="text-xl font-semibold text-yellow-400">Exploración Avanzada</h3>
-            <p>Encuentra cualquier carta con filtros y búsqueda avanzada.</p>
-          </div>
-          <div class="p-6 dark:bg-gray-800 rounded-lg shadow-lg hover:scale-105 transition-transform duration-300">
-            <h3 class="text-xl font-semibold text-yellow-400">Gestión de Colección</h3>
-            <p>Organiza, etiqueta y visualiza tu colección de manera eficiente.</p>
-          </div>
-          <div class="p-6 dark:bg-gray-800 rounded-lg shadow-lg hover:scale-105 transition-transform duration-300">
-            <h3 class="text-xl font-semibold text-yellow-400">Intercambio Seguro</h3>
-            <p>Conéctate con otros coleccionistas y haz intercambios fácilmente.</p>
+      <!-- Características -->
+      <section class="mb-16">
+        <h2 class="text-3xl font-bold text-yellow-500 dark:text-yellow-400 mb-8 text-center">⚡ Características Principales</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+          <div v-for="f in features" :key="f.title"
+            class="p-6 bg-gray-100 dark:bg-gray-800/60 rounded-2xl border border-gray-200 dark:border-gray-700/40 shadow-sm hover:shadow-lg hover:scale-[1.03] hover:border-yellow-400/40 transition-all duration-300 text-center">
+            <span class="text-4xl mb-3 block">{{ f.emoji }}</span>
+            <h3 class="text-lg font-bold text-yellow-500 dark:text-yellow-400 mb-2">{{ f.title }}</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">{{ f.desc }}</p>
           </div>
         </div>
       </section>
 
       <!-- Valores -->
-      <section class="mt-12">
-        <h2 class="text-3xl font-semibold text-yellow-400 mb-4">Nuestros Valores</h2>
-        <ul class="list-disc list-inside text-lg">
-          <li class="mb-2">Transparencia y confianza</li>
-          <li class="mb-2">Pasión por el coleccionismo</li>
-          <li class="mb-2">Comunidad y colaboración</li>
-        </ul>
+      <section class="mb-16 max-w-3xl mx-auto">
+        <h2 class="text-3xl font-bold text-yellow-500 dark:text-yellow-400 mb-6 text-center">🎯 Nuestros Valores</h2>
+        <div class="space-y-3">
+          <div v-for="v in values" :key="v.text"
+            class="flex items-center gap-4 p-4 bg-gray-100 dark:bg-gray-800/40 rounded-xl border border-gray-200 dark:border-gray-700/30">
+            <span class="text-2xl">{{ v.emoji }}</span>
+            <span class="text-lg font-medium">{{ v.text }}</span>
+          </div>
+        </div>
       </section>
 
       <!-- Testimonios -->
-      <section class="mt-12">
-        <h2 class="text-3xl font-semibold text-yellow-400 mb-4">Lo que dicen nuestros usuarios</h2>
-        <div class="space-y-6">
-          <div class="p-6 bg-gray-800 rounded-lg shadow-lg">
-            <p class="text-lg italic">"La mejor plataforma que he usado para organizar mi colección. Súper intuitiva y fácil de usar." - <span class="font-semibold text-yellow-400">Juan Pérez</span></p>
-          </div>
-          <div class="p-6 bg-gray-800 rounded-lg shadow-lg">
-            <p class="text-lg italic">"Por fin un lugar donde puedo intercambiar cartas sin preocupaciones. ¡Increíble trabajo!" - <span class="font-semibold text-yellow-400">María López</span></p>
+      <section class="mb-16">
+        <h2 class="text-3xl font-bold text-yellow-500 dark:text-yellow-400 mb-8 text-center">💬 Lo que dicen nuestros usuarios</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div v-for="t in testimonials" :key="t.author"
+            class="p-6 bg-gray-100 dark:bg-gray-800/60 rounded-2xl border border-gray-200 dark:border-gray-700/40 shadow-sm">
+            <p class="text-lg italic leading-relaxed mb-3">"{{ t.text }}"</p>
+            <p class="text-yellow-500 dark:text-yellow-400 font-bold text-sm">— {{ t.author }}</p>
           </div>
         </div>
       </section>
 
       <!-- FAQ -->
-      <section class="mt-16">
-        <h2 class="text-4xl font-bold text-yellow-400 mb-6">Preguntas Frecuentes</h2>
-        <div class="space-y-4 text-left max-w-3xl mx-auto">
-          <div
-            v-for="(faq, index) in faqs"
-            :key="index"
-            class="bg-gray-800 p-4 rounded-lg shadow-md"
-          >
-            <button
-              @click="toggleDropdown(index)"
-              class="w-full text-left text-lg font-semibold text-yellow-400 flex justify-between items-center focus:outline-none"
-            >
-              {{ faq.question }}
-              <span
-                :class="{'rotate-180': openIndexes[index]}"
-                class="transition-transform duration-300"
-              >
-                ▼
-              </span>
+      <section class="mb-16">
+        <h2 class="text-3xl font-bold text-yellow-500 dark:text-yellow-400 mb-8 text-center">❓ Preguntas Frecuentes</h2>
+        <div class="space-y-3 max-w-3xl mx-auto">
+          <div v-for="(faq, index) in faqs" :key="index"
+            class="bg-gray-100 dark:bg-gray-800/60 rounded-xl border border-gray-200 dark:border-gray-700/40 overflow-hidden">
+            <button @click="toggleDropdown(index)"
+              class="w-full text-left p-5 font-semibold text-gray-800 dark:text-yellow-400 flex justify-between items-center hover:bg-gray-200 dark:hover:bg-gray-700/50 transition-colors">
+              <span>{{ faq.question }}</span>
+              <span :class="{ 'rotate-180': openIndexes[index] }" class="transition-transform duration-300 text-gray-500">▼</span>
             </button>
-
-            <div
-              v-if="openIndexes[index]"
-              class="mt-2 text-gray-300 transition-opacity duration-300"
-            >
-              {{ faq.answer }}
-            </div>
+            <Transition name="faq">
+              <div v-if="openIndexes[index]" class="px-5 pb-5 text-gray-600 dark:text-gray-300">
+                {{ faq.answer }}
+              </div>
+            </Transition>
           </div>
         </div>
       </section>
 
       <!-- Contacto -->
-      <section class="mt-12">
-        <h2 class="text-3xl font-semibold text-yellow-400 mb-4">Contáctanos</h2>
-        <p class="text-lg">Escríbenos a <span class="text-yellow-400 font-semibold">contacto@pokemoncardexplorer.com</span></p>
+      <section class="text-center">
+        <h2 class="text-3xl font-bold text-yellow-500 dark:text-yellow-400 mb-4">📧 Contáctanos</h2>
+        <p class="text-lg">
+          Escríbenos a
+          <a href="mailto:contacto@pokemoncardexplorer.com" class="text-yellow-500 dark:text-yellow-400 font-bold hover:underline">
+            contacto@pokemoncardexplorer.com
+          </a>
+        </p>
       </section>
     </div>
   </div>
@@ -152,4 +133,7 @@ onMounted(() => { // Mostrar las secciones con una animación de fade-in
 .rotate-180 {
   transform: rotate(180deg);
 }
+.faq-enter-active { transition: all 0.3s ease; }
+.faq-leave-active { transition: all 0.2s ease; }
+.faq-enter-from, .faq-leave-to { opacity: 0; transform: translateY(-8px); }
 </style>

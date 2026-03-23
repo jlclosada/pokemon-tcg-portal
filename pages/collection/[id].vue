@@ -2,14 +2,14 @@
   <div>
     <!-- Logo de la coleccion al lado del titulo-->
     <div class="flex items-center gap-2 justify-center flex-col">
-      <img :src="collection?.images.logo" :alt="collection?.name" class="w-52 mr-8 object-contain ml-8 mt-12 flex items-center justify-center" />
+      <img :src="collection?.images.logo" :alt="collection?.name" class="w-52 object-contain mt-12" />
 
       <!-- <h1 class="text-xl font-bold mb-4 text-center mt-4">{{ collection?.name || "Colección" }}</h1> -->
     </div>
 
     <!-- Loading -->
-    <LoadingSpinner v-if="loading" class="m-auto 0" />
-    
+    <LoadingSpinner v-if="loading" class="mx-auto mt-8" />
+
     <!-- Si hay error -->
     <div v-else-if="error" class="text-red-500">Error: {{ error }}</div>
 
@@ -22,7 +22,7 @@
         <li v-for="card in filteredCards" :key="card.id"
           class="p-3 bg-white dark:bg-transparent rounded-lg hover:scale-105 transition-all cursor-pointer flex flex-col items-center"
           @click="selectCard(card)">
-          <img :src="card.images.small" :alt="card.name" class="w-full h-52 object-contain rounded-md mt-4" />
+          <img :src="card.images.small" :alt="card.name" loading="lazy" class="w-full h-52 object-contain rounded-md mt-4" />
 
           <!-- Chip único para el nombre y número de la carta -->
           <div class="flex justify-center items-center mt-3">
@@ -55,11 +55,11 @@ import { useRoute } from "vue-router";
 
 const route = useRoute();
 const collectionId = route.params.id;
-const collection = ref(null);
-const cards = ref([]);
+const collection = ref<any>(null);
+const cards = ref<any[]>([]);
 const loading = ref(true);
-const error = ref(null);
-const selectedCard = ref(null);
+const error = ref<string | null>(null);
+const selectedCard = ref<any>(null);
 const isSlideOverOpen = ref(false);
 
 // Filtros de búsqueda
@@ -71,7 +71,7 @@ const filters = ref({
 
 // Filtrar cartas en base a la búsqueda
 const filteredCards = computed(() =>
-  cards.value.filter((card) => {
+  cards.value.filter((card: any) => {
     return (
       (filters.value.name === "" || card.name.toLowerCase().includes(filters.value.name.toLowerCase())) &&
       (filters.value.number === "" || card.number.includes(filters.value.number)) &&
@@ -83,18 +83,18 @@ const filteredCards = computed(() =>
 const hasSearched = ref(false);
 
 // Función para actualizar filtros
-const updateFilters = (newFilters) => {
-  hasSearched.value = true; // Indica que se realizó una búsqueda
+const updateFilters = (newFilters: any) => {
+  hasSearched.value = true;
   filters.value = newFilters;
 };
 
 onMounted(async () => {
   const { $apiClient } = useNuxtApp();
   try {
-    const collectionResponse = await $apiClient(`/sets/${collectionId}`);
+    const collectionResponse: any = await $apiClient(`/sets/${collectionId}`);
     collection.value = collectionResponse.data;
 
-    const cardsResponse = await $apiClient("/cards", {
+    const cardsResponse: any = await $apiClient("/cards", {
       query: { q: `set.id:${collectionId}` },
     });
     cards.value = cardsResponse.data;
@@ -106,7 +106,7 @@ onMounted(async () => {
   }
 });
 
-const selectCard = (card) => {
+const selectCard = (card: any) => {
   selectedCard.value = card;
   isSlideOverOpen.value = true;
 };
