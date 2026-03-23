@@ -39,7 +39,7 @@
       </section>
 
       <!-- Categorías -->
-      <section class="py-20 px-6">
+      <section class="py-20 px-6 bg-gray-900">
         <div class="max-w-7xl mx-auto">
           <h2 class="text-4xl md:text-5xl font-bold text-center text-white mb-4">Explora el Universo</h2>
           <p class="text-gray-400 text-center mb-16 text-lg max-w-xl mx-auto">Descubre todas las secciones disponibles</p>
@@ -56,7 +56,7 @@
       </section>
 
       <!-- Noticias -->
-      <section id="news-section" class="py-20 px-6 bg-black/30 backdrop-blur-sm">
+      <section id="news-section" class="py-20 px-6 bg-gray-950">
         <div class="max-w-7xl mx-auto">
           <h2 class="text-4xl md:text-5xl font-bold text-center text-white mb-4">Últimas Novedades</h2>
           <p class="text-gray-400 text-center mb-16 text-lg">Las noticias más recientes del mundo Pokémon</p>
@@ -85,7 +85,7 @@ const categories = [
   { title: "Pokédex", description: "Información detallada de cada Pokémon.", iconType: "image", icon: "/icons/pokedex.svg", link: "/pokedex" },
   { title: "Cartas TCG", description: "Colecciona y analiza cartas del TCG.", iconType: "image", icon: "/icons/deck.svg", link: "/cards" },
   { title: "Multimedia", description: "Videos de los mejores canales.", iconType: "icon", iconName: "play", link: "/media" },
-  { title: "Noticias", description: "Últimas novedades Pokémon.", iconType: "icon", iconName: "newspaper", link: "#news-section" },
+  { title: "Noticias", description: "Últimas novedades Pokémon.", iconType: "icon", iconName: "newspaper", link: "/#news-section" },
   { title: "Competitivo", description: "Estrategias y meta actual.", iconType: "icon", iconName: "sparkles", link: "/maintenance" },
   { title: "Guías", description: "Tutoriales para entrenadores.", iconType: "icon", iconName: "book-open", link: "/maintenance" },
 ];

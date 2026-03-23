@@ -1,9 +1,9 @@
 <template>
-    <router-link :to="link" class="related-card">
+    <NuxtLink :to="link || '/'" class="related-card">
       <img :src="image" alt="Imagen relacionada" class="rounded-md" />
       <h4 class="text-xl font-semibold text-gray-900 dark:text-white">{{ title }}</h4>
       <p class="text-sm text-gray-600 dark:text-gray-400">{{ description }}</p>
-    </router-link>
+    </NuxtLink>
   </template>
   
   <script setup lang="ts">

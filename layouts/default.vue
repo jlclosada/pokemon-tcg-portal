@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col min-h-screen bg-gray-900 text-white">
+  <div class="flex flex-col min-h-screen bg-gray-900 text-white relative z-10">
     <!-- Navbar -->
     <Navbar />
 
@@ -9,7 +9,7 @@
     </main>
 
     <!-- Footer -->
-    <Footer class="border-t border-gray-800" />
+    <Footer />
   </div>
 </template>
 

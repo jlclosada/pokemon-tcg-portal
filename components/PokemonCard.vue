@@ -1,114 +1,114 @@
 <template>
   <div
-    class="relative rounded-2xl overflow-hidden bg-gray-800/50 border border-gray-700/30 hover:border-yellow-400/30 transition-all duration-400 cursor-pointer group hover:scale-[1.05] hover:shadow-[0_0_25px_rgba(255,203,5,0.12)]"
+    class="pokemon-card group cursor-pointer"
     @click="openModal"
   >
-    <!-- Número del Pokémon -->
-    <span class="absolute top-2 right-2 z-10 text-xs font-bold text-gray-500 dark:text-gray-500 bg-gray-200/80 dark:bg-gray-900/80 px-2 py-0.5 rounded-full">
-      #{{ pokemon.id }}
+    <!-- Número -->
+    <span class="absolute top-2 right-2 z-10 text-[10px] font-bold text-white/40">
+      #{{ String(pokemon.id).padStart(3, '0') }}
     </span>
 
     <!-- Imagen -->
-    <div class="flex justify-center pt-6 pb-2 px-4">
+    <div class="flex justify-center pt-5 pb-1 px-3">
       <img v-if="pokemon.image" :src="pokemon.image" :alt="pokemon.name" loading="lazy"
-        class="w-24 h-24 md:w-28 md:h-28 object-contain drop-shadow-lg transition-transform duration-500 group-hover:scale-115 group-hover:-translate-y-1" />
+        class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain drop-shadow-[0_4px_12px_rgba(255,203,5,0.2)] transition-all duration-500 group-hover:scale-[1.18] group-hover:-translate-y-2 group-hover:drop-shadow-[0_8px_20px_rgba(255,203,5,0.35)]" />
     </div>
 
     <!-- Info -->
-    <div class="relative z-10 flex flex-col items-center pb-4 px-3">
-      <h3 class="text-sm md:text-base font-bold text-white text-center capitalize group-hover:text-yellow-400 transition-colors">
+    <div class="relative z-10 flex flex-col items-center pb-4 px-2 gap-1.5">
+      <h3 class="text-xs sm:text-sm font-bold text-white text-center capitalize leading-tight group-hover:text-yellow-400 transition-colors duration-300">
         {{ pokemon.name }}
       </h3>
-
-      <!-- Tipos -->
-      <div v-if="pokemon.types?.length" class="flex justify-center gap-1.5 mt-2">
+      <div v-if="pokemon.types?.length" class="flex gap-1">
         <span v-for="type in pokemon.types" :key="type" :class="getTypeColor(type)"
-          class="px-2 py-0.5 text-xs font-semibold rounded-full shadow-sm">
+          class="px-2 py-[2px] text-[10px] font-bold rounded-full capitalize">
           {{ type }}
         </span>
       </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Barra inferior -->
+    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-gradient-to-r from-yellow-400 to-orange-500 group-hover:w-3/4 transition-all duration-500 rounded-full" />
+
+    <!-- ====== MODAL ====== -->
     <UModal v-model="isModalOpen" :overlay="true" @click-outside="closeModal">
-      <div class="bg-gray-900 p-6 md:p-8 rounded-2xl mx-auto relative overflow-hidden shadow-2xl max-h-[85vh] overflow-y-auto">
-        <button @click="closeModal"
-          class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700 transition-all z-20">
-          ✕
-        </button>
+      <div class="pokemon-modal">
+        <!-- Close -->
+        <button @click="closeModal" class="modal-close">✕</button>
 
-        <div v-if="pokemonDetails">
-          <div class="flex flex-col md:grid-cols-1 gap-6">
-            <!-- Imagen -->
-            <div class="flex justify-center">
-              <img v-if="pokemonDetails.sprites" :src="pokemonDetails.sprites.other['official-artwork'].front_default"
-                :alt="pokemonDetails.name"
-                class="w-80 h-80 md:w-96 md:h-96 drop-shadow-lg transition-transform transform hover:scale-110" />
+        <div v-if="pokemonDetails" class="space-y-5">
+          <!-- Imagen con fondo tipo -->
+          <div class="relative flex justify-center py-4">
+            <div class="absolute inset-0 rounded-2xl opacity-20 blur-2xl" :class="getTypeBgGlow(pokemonDetails.types?.[0]?.type?.name)" />
+            <img :src="pokemonDetails.sprites?.other?.['official-artwork']?.front_default"
+              :alt="pokemonDetails.name"
+              class="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 object-contain drop-shadow-2xl animate-float" />
+          </div>
+
+          <!-- Nombre y número -->
+          <div class="text-center">
+            <h2 class="text-2xl sm:text-3xl font-extrabold capitalize text-white">
+              {{ pokemonDetails.name }}
+            </h2>
+            <span class="text-sm text-gray-500">#{{ String(pokemonDetails.id).padStart(3, '0') }}</span>
+          </div>
+
+          <!-- Tipos -->
+          <div class="flex justify-center gap-2">
+            <span v-for="type in pokemonDetails.types" :key="type.type.name" :class="getTypeColor(type.type.name)"
+              class="px-4 py-1 text-sm font-bold rounded-full capitalize shadow-md">
+              {{ translateType(type.type.name) }}
+            </span>
+          </div>
+
+          <!-- Stats grid -->
+          <div class="grid grid-cols-2 gap-3 bg-gray-800/40 rounded-xl p-4">
+            <div class="stat-box">
+              <span class="stat-label">{{ t('weight') }}</span>
+              <span class="stat-value">{{ (pokemonDetails.weight / 10).toFixed(1) }} kg</span>
             </div>
-
-            <!-- Detalles -->
-            <div class="flex flex-col justify-center">
-              <h2 class="text-4xl font-bold capitalize text-gray-800 dark:text-gray-200 mb-2 text-center md:text-left">
-                #{{ pokemonDetails.id }} {{ pokemonDetails.name }}
-              </h2>
-
-              <div class="flex flex-wrap justify-center md:justify-start gap-2 mb-4">
-                <span v-for="type in pokemonDetails.types"
-                      :key="type.type.name"
-                      :class="getTypeColor(type.type.name)"
-                      class="px-3 py-1 text-lg font-semibold rounded-lg shadow-md">
-                  {{ translateType(type.type.name) }}
-                </span>
-              </div>
-              <p class="text-gray-600 dark:text-gray-300 text-lg">
-                <strong>{{ t('weight') }}:</strong> {{ pokemonDetails.weight / 10 }} kg
-              </p>
-              <p class="text-gray-600 dark:text-gray-300 text-lg">
-                <strong>{{ t('height') }}:</strong> {{ pokemonDetails.height / 10 }} m
-              </p>
-
-              <!-- Habilidades -->
-              <h3 class="mt-6 text-2xl font-semibold">{{ t('abilities') }}:</h3>
-              <ul v-if="pokemonDetails.abilities?.length" class="list-disc list-inside text-gray-700 dark:text-gray-300 text-lg">
-                <li v-for="ability in pokemonDetails.abilities" :key="ability.ability.name">
-                  {{ ability.ability.name }}
-                </li>
-              </ul>
-
-              <!-- Estadísticas -->
-              <h3 class="mt-6 text-2xl font-semibold">{{ t('statistics')}}:</h3>
-              <div v-if="pokemonDetails.stats?.length" class="grid grid-cols-1 gap-4">
-                <div v-for="stat in pokemonDetails.stats" :key="stat.stat.name">
-                  <div class="flex justify-between items-center mb-1">
-                    <span class="capitalize font-semibold text-gray-800 dark:text-gray-300 text-lg">
-                      {{ stat.stat.name }}:
-                    </span>
-                    <span class="font-bold text-lg">{{ stat.base_stat }}</span>
-                  </div>
-                  <div class="w-full bg-gray-300 dark:bg-gray-700 h-6 rounded-lg overflow-hidden">
-                    <div
-                      :style="{ width: stat.base_stat + '%' }"
-                      :class="getStatColor(stat.base_stat)"
-                      class="h-full transition-all duration-700 ease-in-out"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-
-
-              <!-- Movimientos -->
-              <h3 class="mt-6 text-2xl font-semibold">{{ t('movements') }}:</h3>
-              <div v-if="pokemonDetails.moves?.length" class="flex flex-wrap gap-2">
-                <span v-for="move in pokemonDetails.moves.slice(0, 10)" :key="move.move.name"
-                  class="bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-lg text-sm font-semibold shadow">
-                  {{ move.move.name }}
+            <div class="stat-box">
+              <span class="stat-label">{{ t('height') }}</span>
+              <span class="stat-value">{{ (pokemonDetails.height / 10).toFixed(1) }} m</span>
+            </div>
+            <div class="stat-box col-span-2">
+              <span class="stat-label">{{ t('abilities') }}</span>
+              <div class="flex flex-wrap gap-1.5 mt-1">
+                <span v-for="a in pokemonDetails.abilities" :key="a.ability.name"
+                  class="px-2.5 py-0.5 bg-gray-700/80 rounded-full text-xs text-gray-300 capitalize border border-gray-600/40">
+                  {{ a.ability.name.replace('-', ' ') }}
                 </span>
               </div>
             </div>
           </div>
+
+          <!-- Barras de stats -->
+          <div class="space-y-2.5">
+            <h4 class="text-sm font-bold text-yellow-400 uppercase tracking-wider">{{ t('statistics') }}</h4>
+            <div v-for="stat in pokemonDetails.stats" :key="stat.stat.name" class="flex items-center gap-3">
+              <span class="text-[11px] text-gray-400 capitalize w-20 truncate">{{ stat.stat.name.replace('-', ' ') }}</span>
+              <div class="flex-1 h-2 bg-gray-800 rounded-full overflow-hidden">
+                <div :style="{ width: Math.min(stat.base_stat / 1.5, 100) + '%' }" :class="getStatColor(stat.base_stat)"
+                  class="h-full rounded-full transition-all duration-1000 ease-out" />
+              </div>
+              <span class="text-xs font-bold text-white w-8 text-right">{{ stat.base_stat }}</span>
+            </div>
+          </div>
+
+          <!-- Movimientos -->
+          <div>
+            <h4 class="text-sm font-bold text-yellow-400 uppercase tracking-wider mb-2">{{ t('movements') }}</h4>
+            <div class="flex flex-wrap gap-1.5">
+              <span v-for="move in pokemonDetails.moves.slice(0, 12)" :key="move.move.name"
+                class="px-2 py-0.5 bg-gray-800/80 rounded-md text-[11px] text-gray-400 border border-gray-700/30 capitalize">
+                {{ move.move.name.replace('-', ' ') }}
+              </span>
+            </div>
+          </div>
         </div>
 
-        <div v-else class="text-center p-8">
+        <!-- Loading -->
+        <div v-else class="flex justify-center items-center py-20">
           <LoadingSpinner />
         </div>
       </div>
@@ -120,67 +120,90 @@
 import { ref } from 'vue';
 import { useI18n } from "#imports";
 
-const props = defineProps({
-  pokemon: {
-    type: Object,
-    required: true
-  }
-});
-const { t } = useI18n(); // Accede a la función de traducción
+const props = defineProps({ pokemon: { type: Object, required: true } });
+const { t } = useI18n();
 
 const isModalOpen = ref(false);
 const pokemonDetails = ref(null);
-const translateType = (type) => {
-  return t(type) || type; // Devuelve la traducción si existe, si no, el mismo valor
-};
-
+const translateType = (type) => t(type) || type;
 
 const openModal = async () => {
   isModalOpen.value = true;
-  await fetchPokemonDetails();
+  if (!pokemonDetails.value) await fetchPokemonDetails();
 };
-
-const closeModal = () => {
-  isModalOpen.value = false;
-};
+const closeModal = () => { isModalOpen.value = false; };
 
 const fetchPokemonDetails = async () => {
   try {
     pokemonDetails.value = await $fetch(`https://pokeapi.co/api/v2/pokemon/${props.pokemon.id}`);
-  } catch (error) {
-    console.error('Error al cargar los detalles del Pokémon:', error);
+  } catch (e) {
+    console.error('Error:', e);
     pokemonDetails.value = null;
   }
 };
 
-const getStatColor = (stat) => {
-  if (stat > 70) return 'bg-green-500 dark:bg-green-400'; // Verde
-  if (stat > 50) return 'bg-yellow-500 dark:bg-yellow-400'; // Amarillo
-  return 'bg-red-500 dark:bg-red-400'; // Rojo
+const getStatColor = (s) => {
+  if (s >= 120) return 'bg-emerald-400';
+  if (s >= 90) return 'bg-green-500';
+  if (s >= 60) return 'bg-yellow-500';
+  if (s >= 40) return 'bg-orange-500';
+  return 'bg-red-500';
 };
 
+const getTypeBgGlow = (type) => {
+  const map = { fire: 'bg-red-500', water: 'bg-blue-500', grass: 'bg-green-500', electric: 'bg-yellow-400',
+    psychic: 'bg-pink-500', ice: 'bg-cyan-300', dragon: 'bg-purple-600', dark: 'bg-gray-700',
+    fairy: 'bg-pink-300', fighting: 'bg-orange-600', poison: 'bg-purple-500', ground: 'bg-yellow-600',
+    flying: 'bg-indigo-400', bug: 'bg-lime-500', rock: 'bg-gray-500', ghost: 'bg-indigo-700',
+    steel: 'bg-gray-400', normal: 'bg-gray-500' };
+  return map[type] || 'bg-gray-500';
+};
 
 const getTypeColor = (type) => {
-  const colors = {
-    fire: 'bg-red-500 text-white',
-    water: 'bg-blue-500 text-white',
-    grass: 'bg-green-500 text-white',
-    electric: 'bg-yellow-500 text-gray-800',
-    ice: 'bg-cyan-400 text-gray-800',
-    fighting: 'bg-orange-700 text-white',
-    poison: 'bg-purple-600 text-white',
-    ground: 'bg-yellow-700 text-white',
-    flying: 'bg-indigo-400 text-white',
-    psychic: 'bg-pink-500 text-white',
-    bug: 'bg-lime-500 text-gray-800',
-    rock: 'bg-gray-600 text-white',
-    ghost: 'bg-indigo-800 text-white',
-    dragon: 'bg-purple-800 text-white',
-    dark: 'bg-gray-900 text-white',
-    steel: 'bg-gray-400 text-gray-900',
-    fairy: 'bg-pink-300 text-gray-800',
-    normal: 'bg-gray-500 text-white',
+  const c = {
+    fire: 'bg-red-500 text-white', water: 'bg-blue-500 text-white', grass: 'bg-green-500 text-white',
+    electric: 'bg-yellow-500 text-gray-900', ice: 'bg-cyan-400 text-gray-900', fighting: 'bg-orange-700 text-white',
+    poison: 'bg-purple-600 text-white', ground: 'bg-yellow-700 text-white', flying: 'bg-indigo-400 text-white',
+    psychic: 'bg-pink-500 text-white', bug: 'bg-lime-500 text-gray-900', rock: 'bg-gray-600 text-white',
+    ghost: 'bg-indigo-800 text-white', dragon: 'bg-purple-800 text-white', dark: 'bg-gray-900 text-white',
+    steel: 'bg-gray-400 text-gray-900', fairy: 'bg-pink-300 text-gray-900', normal: 'bg-gray-500 text-white',
   };
-  return colors[type] || 'bg-gray-400 text-white';
+  return c[type] || 'bg-gray-400 text-white';
 };
 </script>
+
+<style scoped>
+.pokemon-card {
+  @apply relative rounded-2xl overflow-hidden bg-gray-800/40 backdrop-blur-sm border border-gray-700/20 transition-all duration-500;
+}
+.pokemon-card:hover {
+  border-color: rgba(251, 191, 36, 0.35);
+  box-shadow: 0 0 30px rgba(255, 203, 5, 0.08), 0 8px 32px rgba(0,0,0,0.3);
+  transform: translateY(-4px);
+}
+
+.pokemon-modal {
+  @apply bg-gray-900 p-5 sm:p-7 rounded-2xl relative overflow-y-auto shadow-2xl;
+  max-height: 88vh;
+}
+.modal-close {
+  @apply absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700 transition-all z-20 text-sm;
+}
+.stat-box {
+  @apply text-center p-2.5 bg-gray-900/60 rounded-lg;
+}
+.stat-label {
+  @apply block text-[10px] text-gray-500 uppercase tracking-wider;
+}
+.stat-value {
+  @apply block text-base font-bold text-white mt-0.5;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+</style>

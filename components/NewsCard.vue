@@ -1,5 +1,5 @@
 <template>
-  <router-link
+  <NuxtLink
     :to="link || '/'"
     class="group relative block rounded-2xl overflow-hidden bg-gray-800/60 backdrop-blur-md border border-gray-700/40 transition-all duration-500 hover:scale-[1.03] hover:border-yellow-400/40 hover:shadow-[0_8px_30px_rgba(0,0,0,0.4)]"
   >
@@ -23,7 +23,7 @@
         Leer más →
       </span>
     </div>
-  </router-link>
+  </NuxtLink>
 </template>
 
 <script setup lang="ts">

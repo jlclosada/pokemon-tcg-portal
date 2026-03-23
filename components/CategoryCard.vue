@@ -1,6 +1,6 @@
 <template>
-  <router-link
-    :to="link || '/'"
+  <NuxtLink
+    :to="link"
     class="group relative block rounded-2xl overflow-hidden bg-gray-800/60 backdrop-blur-md border border-gray-700/40 transition-all duration-500 hover:scale-[1.04] hover:border-yellow-400/50 hover:shadow-[0_0_30px_rgba(255,203,5,0.15)]"
   >
     <!-- Glow de fondo -->
@@ -22,16 +22,16 @@
 
     <!-- Barra inferior animada -->
     <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full group-hover:w-3/4 transition-all duration-500" />
-  </router-link>
+  </NuxtLink>
 </template>
 
 <script setup lang="ts">
 const props = defineProps<{
-  title?: string;
-  description?: string;
-  iconType?: string;
-  iconName?: string;
-  icon?: string;
-  link: string;
+  title?: string
+  description?: string
+  iconType?: string
+  iconName?: string
+  icon?: string
+  link: string
 }>();
 </script>

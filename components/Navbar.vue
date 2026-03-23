@@ -33,11 +33,6 @@
         <UToggle v-model="isDark" class="rounded-full border border-gray-200 dark:border-gray-700"
           on-icon="i-heroicons-moon-20-solid" off-icon="i-heroicons-sun-20-solid" size="lg" />
 
-        <!-- Botón Login/Logout -->
-        <UButton v-if="authStore.isAuthenticated" @click="logout" color="gray" variant="ghost" label="Logout" />
-        <UButton v-else @click="login" color="gray" variant="solid"
-          class="hidden md:inline-flex bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600"
-          label="Login" />
 
         <!-- Dropdown de idioma -->
         <div class="relative">

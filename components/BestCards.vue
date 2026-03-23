@@ -30,7 +30,7 @@
               class="w-full rounded-2xl shadow-2xl transition-all duration-500 group-hover:shadow-[0_0_40px_rgba(255,203,5,0.3)]"
             />
             <!-- Info overlay -->
-            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-4 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-400 rounded-b-2xl">
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-4 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 rounded-b-2xl">
               <h3 class="text-sm font-bold text-white">{{ card.name }}</h3>
               <div class="flex justify-between items-center mt-1">
                 <span class="text-xs text-yellow-400">{{ card.rarity || "—" }}</span>
